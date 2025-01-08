@@ -42,15 +42,19 @@ interface HeaderProps {
     onLanguageChange: (langCode: string) => void; // Yeni prop eklendi
 }
 
+interface DropdownProps {
+    triggerRef?: React.RefObject<HTMLElement | HTMLButtonElement>;
+}
+
 const Dropdown: React.FC<{
     isOpen: boolean;
     onClose: () => void;
     children: React.ReactNode;
     className?: string;
-    triggerRef?: React.RefObject<HTMLElement>;
+    triggerRef?: React.RefObject<HTMLElement | HTMLButtonElement>;
 }> = memo(({ isOpen, onClose, children, className = '', triggerRef }) => {
     const ref = useRef<HTMLDivElement>(null);
-    useOnClickOutside(ref, onClose, triggerRef ? [triggerRef] : undefined);
+    useOnClickOutside(ref as React.RefObject<HTMLElement>, () => setDropdownOpen(false));
 
     return (
         <AnimatePresence>
@@ -286,7 +290,7 @@ const Header: React.FC<HeaderProps> = ({
                             <Dropdown
                                 isOpen={dropdownOpen}
                                 onClose={() => setDropdownOpen(false)}
-                                triggerRef={buttonRef}
+                                triggerRef={buttonRef as React.RefObject<HTMLElement>}
                                 className={`${
                                     darkMode
                                         ? 'border-gray-700 bg-gray-800 text-gray-200'
@@ -416,3 +420,7 @@ const Header: React.FC<HeaderProps> = ({
 };
 
 export default memo(Header);
+function setDropdownOpen(arg0: boolean): void {
+    throw new Error('Function not implemented.');
+}
+

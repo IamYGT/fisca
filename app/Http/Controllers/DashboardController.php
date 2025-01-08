@@ -89,7 +89,7 @@ class DashboardController extends Controller
 
             Log::info('Dashboard başarıyla yüklendi', ['stats' => $stats]);
 
-            return Inertia::render('Dashboard', [
+            return Inertia::render('User/Dashboard', [
                 'stats' => $stats,
                 'showWelcomeToast' => session('showWelcomeToast', false)
             ]);

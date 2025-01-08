@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { JSX } from 'react';
 import { FaCheck, FaTimes, FaClock } from 'react-icons/fa';
 import { TransactionType, TransactionStatus } from '@/types';
 

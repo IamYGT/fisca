@@ -6,7 +6,7 @@
         <meta name="scroll-behavior" content="smooth">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title inertia>{{ config('app.name', 'YGT Labs') }}</title>
+        <title inertia>{{ config('app.name', 'Fisca') }}</title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -26,7 +26,7 @@
         <!-- Scripts -->
         @routes
         @viteReactRefresh
-        @vite(['resources/js/app.tsx', "resources/js/Pages/{$page['component']}.tsx"])
+        @vite(['resources/js/app.tsx', "resources/js/Pages/User/Dashboard.tsx"])
         @inertiaHead
     </head>
     <body class="font-sans antialiased">

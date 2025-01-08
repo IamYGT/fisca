@@ -15,7 +15,7 @@ interface LanguageSelectorProps {
     secili_dil: Language;
     isMobile: boolean;
     embedded?: boolean;
-    onLanguageChange: (langCode: string) => void; // Zorunlu hale getirildi
+    onLanguageChange: (langCode: string) => void;
 }
 
 const LanguageSelector: React.FC<LanguageSelectorProps> = ({
@@ -24,12 +24,16 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({
     secili_dil,
     isMobile,
     embedded = false,
-    onLanguageChange, // Prop eklendi
+    onLanguageChange,
 }) => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const ref = useRef<HTMLDivElement>(null);
 
-    useOnClickOutside(ref, () => setDropdownOpen(false));
+    useOnClickOutside(ref as React.RefObject<HTMLElement>, () => {
+        if (dropdownOpen) {
+            setDropdownOpen(false);
+        }
+    });
 
     const getFlagUrl = useCallback((langCode: string) => {
         const langToCountryCode: { [key: string]: string } = { en: 'gb', tr: 'tr' };
@@ -38,7 +42,7 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({
     }, []);
 
     const handleLanguageChange = useCallback((langCode: string) => {
-        onLanguageChange(langCode); // Üst bileşene çağrı yapılıyor
+        onLanguageChange(langCode);
     }, [onLanguageChange]);
 
     const dropdownItemClasses = useCallback((isSelected = false) => `
@@ -100,9 +104,8 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({
             </div>
         );
     }
-
     return (
-        <div className="relative" ref={ref}>
+        <div className="relative" ref={ref as React.RefObject<HTMLDivElement>}>
             <button
                 onClick={() => setDropdownOpen((prev) => !prev)}
                 className={`

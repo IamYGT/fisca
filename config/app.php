@@ -1,7 +1,7 @@
 <?php
 
-$mainDomain = env('MAIN_DOMAIN', 'ygtlabs.co');
-$appSubdomain = env('APP_SUBDOMAIN', 'transactify');
+$mainDomain = env('MAIN_DOMAIN', 'fisca.org.uk');
+
 
 return [
 
@@ -16,7 +16,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'YGT Labs'),
+    'name' => env('APP_NAME', 'Fisca'),
 
     /*
     |--------------------------------------------------------------------------
@@ -55,7 +55,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', "https://$appSubdomain.$mainDomain"),
+    'url' => env('APP_URL', "https://$mainDomain"),
 
     /*
     |--------------------------------------------------------------------------
@@ -128,8 +128,7 @@ return [
 
     'domains' => [
         'main' => $mainDomain,
-        'app' => $appSubdomain,
-        'full' => "$appSubdomain.$mainDomain",
+        'full' => "$mainDomain",
         'allowed' => "*.$mainDomain",
     ],
 

@@ -3,7 +3,7 @@ import { useTranslation } from '@/Contexts/TranslationContext';
 
 import Tippy from '@tippyjs/react';
 import { AnimatePresence, motion } from 'framer-motion';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { JSX, useCallback, useEffect, useState } from 'react';
 
 import {
     MdAccountBalance,
