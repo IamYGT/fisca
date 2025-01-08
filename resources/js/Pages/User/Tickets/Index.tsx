@@ -89,7 +89,7 @@ export default function Index({ auth, tickets, stats }: Props) {
                     {/* Yeni Ticket Oluştur Butonu */}
                     <div className="mb-6">
                         <Link
-                            href={route('tickets.create')}
+                            href={route('user.tickets.create')}
                             className="inline-flex items-center rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700"
                         >
                             <FaTicketAlt className="mr-2" />

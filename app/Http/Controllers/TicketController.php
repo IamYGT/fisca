@@ -32,7 +32,7 @@ class TicketController extends Controller
             'answered' => Ticket::where('user_id', auth()->id())->where('status', 'answered')->count(),
         ];
 
-        return Inertia::render('Tickets/Index', [
+        return Inertia::render('User/Tickets/Index', [
             'tickets' => $tickets,
             'stats' => $stats,
             'statuses' => Ticket::STATUSES,
@@ -43,7 +43,7 @@ class TicketController extends Controller
 
     public function create(Request $request)
     {
-        return Inertia::render('Tickets/Create', [
+        return Inertia::render('User/Tickets/Create', [
             'subject' => $request->input('subject'),
             'message' => $request->input('message'),
             'priority' => $request->input('priority', 'medium'),
@@ -117,7 +117,7 @@ class TicketController extends Controller
 
         $ticket->load(['replies.user', 'replies.attachments', 'histories']);
 
-        return Inertia::render('Tickets/Show', [
+        return Inertia::render('User/Tickets/Show', [
             'ticket' => $ticket,
             'statuses' => Ticket::STATUSES,
         ]);

@@ -36,7 +36,7 @@ class ProfileController extends Controller
 
             session(['profile_data' => $sessionData]);
 
-            return Inertia::render('Profile/Edit', $sessionData);
+            return Inertia::render('User/Profile/Edit', $sessionData);
 
         } catch (\Exception $e) {
             Log::error('Profile edit error:', [

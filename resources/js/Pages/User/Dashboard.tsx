@@ -12,7 +12,7 @@ import { Head, Link, router } from '@inertiajs/react';
 import { motion } from 'framer-motion';
 import { useEffect } from 'react';
 import 'react-circular-progressbar/dist/styles.css';
-import { FaChartPie, FaExchangeAlt, FaUserPlus } from 'react-icons/fa';
+import { FaChartPie, FaExchangeAlt, FaUserPlus, FaMoneyBillWave } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import {
     Bar,
@@ -151,11 +151,11 @@ const ActivityItem = ({
     const getActivityRoute = (activity: DashboardStats['recentActivity'][0]) => {
         switch (activity.type) {
             case 'transaction':
-                return route('transactions.show', { transaction: activity.id });
+                return route('user.transactions.show', { transaction: activity.id });
             case 'withdrawal':
-                return route('withdrawal.request');
+                return route('user.withdrawals.create');
             case 'ticket':
-                return route('tickets.show', { ticket: activity.id });
+                return route('user.tickets.show', { ticket: activity.id });
             default:
                 return '#';
         }
@@ -419,7 +419,7 @@ const IbanList = ({ ibans }: { ibans: DashboardStats['ibans'] }) => {
                     </p>
                 </div>
                 <Link
-                    href={route('profile.ibans.index')}
+                    href={route('user.profile.ibans.index')}
                     className="inline-flex items-center gap-1.5 rounded-lg bg-blue-50 px-3 py-2 text-sm font-medium text-blue-600 hover:bg-blue-100 dark:bg-blue-400/10 dark:text-blue-400 dark:hover:bg-blue-400/20 transition-colors duration-200"
                 >
                     <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -485,7 +485,7 @@ const IbanList = ({ ibans }: { ibans: DashboardStats['ibans'] }) => {
                                 {/* Aksiyonlar */}
                                 <div className="ml-4 flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
                                     <Link
-                                        href={route('profile.ibans.index')}
+                                        href={route('user.profile.ibans.index')}
                                         className="rounded-lg p-2 hover:bg-gray-100 dark:hover:bg-gray-700
                                             text-gray-400 hover:text-gray-600 dark:text-gray-500
                                             dark:hover:text-gray-300 transition-colors"
@@ -512,28 +512,28 @@ export default function Dashboard({ auth, stats }: PageProps) {
         {
             icon: FaExchangeAlt,
             label: t('dashboard.transactions'),
-            href: route('transactions.history'),
+            href: route('user.transactions.history'),
             color: 'from-blue-500 to-blue-600',
             hoverColor: 'hover:from-blue-600 hover:to-blue-700'
         },
         {
-            icon: CurrencyDollarIcon,
-            label: t('dashboard.withdrawal'),
-            href: route('withdrawal.request'),
-            color: 'from-green-500 to-green-600',
-            hoverColor: 'hover:from-green-600 hover:to-green-700'
+            label: t('dashboard.actions.withdraw'),
+            href: route('user.withdrawals.create'),
+            icon: FaMoneyBillWave,
+            color: 'from-green-600 to-green-700',
+            hoverColor: 'hover:from-green-700 hover:to-green-800'
         },
         {
+            label: t('dashboard.actions.tickets'),
+            href: route('user.tickets.index'),
             icon: ChatBubbleLeftIcon,
-            label: t('dashboard.supportTickets'),
-            href: route('tickets.index'),
-            color: 'from-amber-500 to-amber-600',
-            hoverColor: 'hover:from-amber-600 hover:to-amber-700'
+            color: 'from-purple-600 to-purple-700',
+            hoverColor: 'hover:from-purple-700 hover:to-purple-800'
         },
         {
             icon: BanknotesIcon,
             label: t('dashboard.ibanManagement'),
-            href: route('profile.ibans.index'),
+            href: route('user.profile.ibans.index'),
             color: 'from-purple-500 to-purple-600',
             hoverColor: 'hover:from-purple-600 hover:to-purple-700'
         }
@@ -592,7 +592,7 @@ export default function Dashboard({ auth, stats }: PageProps) {
                                 {t('dashboard.recentActivity')}
                             </h3>
                             <Link
-                                href={route('transactions.history')}
+                                href={route('user.transactions.history')}
                                 className="inline-flex items-center gap-1 text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
                             >
                                 {t('common.viewAll')}

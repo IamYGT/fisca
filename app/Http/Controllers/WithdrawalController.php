@@ -59,7 +59,7 @@ class WithdrawalController extends Controller
 
 
 
-        return Inertia::render('Withdrawal/Create', [
+        return Inertia::render('User/Withdrawals/Create', [
             'exchangeRate' => $exchangeRate,
             'savedIbans' => $savedIbans,
             'banks' => $banks // Banka listesini frontend'e gönder

@@ -31,27 +31,27 @@ interface MenuItem {
 const userMenuItems: MenuItem[] = [
     {
         name: 'sidebar.dashboard',
-        route: 'dashboard',
+        route: 'user.dashboard',
         icon: <MdDashboard className="h-5 w-5 sm:h-6 sm:w-6" />,
     },
     {
         name: 'sidebar.transactions',
-        route: 'transactions.history',
+        route: 'user.transactions.history',
         icon: <MdPayment className="h-5 w-5 sm:h-6 sm:w-6" />,
     },
     {
         name: 'sidebar.withdrawals',
-        route: 'withdrawal.request',
+        route: 'user.withdrawals.create',
         icon: <MdMoneyOff className="h-5 w-5 sm:h-6 sm:w-6" />,
     },
     {
         name: 'sidebar.tickets',
-        route: 'tickets.index',
+        route: 'user.tickets.index',
         icon: <MdConfirmationNumber className="h-5 w-5 sm:h-6 sm:w-6" />,
     },
     {
         name: 'sidebar.ibans',
-        route: 'profile.ibans.index',
+        route: 'user.profile.ibans.index',
         icon: <MdAccountBalance className="h-5 w-5 sm:h-6 sm:w-6" />,
     },
 ];

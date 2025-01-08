@@ -16,24 +16,13 @@ class UserIbanController extends Controller
 
     public function index()
     {
-        try {
-            $ibans = UserIban::where('user_id', Auth::id())
+        return Inertia::render('User/Profile/Ibans/UserIbanIndex', [
+            'ibans' => auth()->user()->ibans()
+                ->with('bank')
                 ->orderBy('is_default', 'desc')
                 ->orderBy('created_at', 'desc')
-                ->with('user')
-                ->get();
-
-            $banks = cache()->rememberForever('turkey_banks', function () {
-                return json_decode(file_get_contents(resource_path('data/turkey_banks.json')), true);
-            });
-
-            return Inertia::render('Profile/Ibans/UserIbanIndex', [
-                'ibans' => $ibans,
-                'banks' => $banks,
-            ]);
-        } catch (\Exception $e) {
-            throw $e;
-        }
+                ->get()
+        ]);
     }
 
     public function store(Request $request)

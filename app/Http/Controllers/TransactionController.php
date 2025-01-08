@@ -40,7 +40,7 @@ class TransactionController extends Controller
             ->latest()
             ->paginate(10);
 
-        return Inertia::render('Transactions/History', [
+        return Inertia::render('User/Transactions/History', [
             'transactions' => $transactions,
             'stats' => $stats,
             'filters' => [
