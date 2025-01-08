@@ -1,0 +1,5 @@
+giris.zip
+*.zip
+/vendor/
+/node_modules/
+.env
