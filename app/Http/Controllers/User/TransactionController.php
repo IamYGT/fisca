@@ -1,22 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
 
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\Auth;
-use App\Services\SlackService;
+use App\Http\Controllers\Controller;
 
 class TransactionController extends Controller
 {
-    protected $slackService;
-
-    public function __construct(SlackService $slackService)
-    {
-        $this->slackService = $slackService;
-    }
-
     public function history()
     {
         $user = Auth::user();
@@ -42,44 +35,6 @@ class TransactionController extends Controller
 
         return Inertia::render('User/Transactions/History', [
             'transactions' => $transactions,
-            'stats' => $stats,
-            'filters' => [
-                'search' => request('search', ''),
-                'type' => request('type', 'all'),
-            ],
-        ]);
-    }
-
-    public function pending()
-    {
-        $user = Auth::user();
-
-        $stats = [
-            'total_amount_usd' => $user->transactions()
-                ->whereIn('status', ['completed', 'approved'])
-                ->sum('amount_usd'),
-
-            'total_amount_try' => $user->transactions()
-                ->whereIn('status', ['completed', 'approved'])
-                ->sum('amount'),
-
-            'pending_count' => $user->transactions()
-                ->whereIn('status', ['pending', 'waiting'])
-                ->count(),
-
-            'completed_count' => $user->transactions()
-                ->whereIn('status', ['completed', 'approved'])
-                ->count(),
-        ];
-
-        $pendingTransactions = $user->transactions()
-            ->with(['user'])
-            ->whereIn('status', ['pending', 'waiting'])
-            ->latest()
-            ->paginate(10);
-
-        return Inertia::render('Transactions/Pending', [
-            'transactions' => $pendingTransactions,
             'stats' => $stats,
             'filters' => [
                 'search' => request('search', ''),
@@ -168,10 +123,7 @@ class TransactionController extends Controller
 
             try {
                 $transaction = Auth::user()->transactions()->create($transactionData);
-                $transaction->load('user'); // User modelini yükle
-
-                // Slack bildirimi gönder
-                $this->slackService->sendTransactionNotification($transaction->toArray());
+                $transaction->load('user');
 
                 \Log::info('Created transaction:', [
                     'id' => $transaction->id,
@@ -211,7 +163,6 @@ class TransactionController extends Controller
         }
     }
 
-    // İşlem detaylarını görüntüleme
     public function show(Transaction $transaction)
     {
         // Yetkilendirme kontrolü
@@ -283,21 +234,6 @@ class TransactionController extends Controller
                         'user' => auth()->user()->name
                     ]
                 );
-
-                // User modelini yükle ve Slack bildirimi gönder
-                $transaction->load('user');
-                app(SlackService::class)->sendTransactionNotification(
-                    array_merge(
-                        $transaction->toArray(),
-                        [
-                            'status_changed' => true,
-                            'old_status' => $oldStatus,
-                            'new_status' => 'cancelled',
-                            'cancelled_by' => auth()->user()->name,
-                            'cancelled_at' => now()->format('Y-m-d H:i:s')
-                        ]
-                    )
-                );
             });
 
             return redirect()->back()->with('success', 'İşlem başarıyla iptal edildi.');
@@ -309,46 +245,6 @@ class TransactionController extends Controller
             ]);
 
             return redirect()->back()->with('error', 'İşlem iptal edilemedi.');
-        }
-    }
-
-    // Test fonksiyonunu ekleyelim
-    public function testSlackNotification()
-    {
-        try {
-            // Test verisi oluştur
-            $testTransaction = [
-                'type' => 'bank_withdrawal',
-                'amount_usd' => 1000.00,
-                'amount' => 30000.00,
-                'reference_id' => 'TEST-' . strtoupper(substr(uniqid(), -8)),
-                'customer_name' => 'Test',
-                'customer_surname' => 'User',
-                'bank_details' => [
-                    'name' => 'Ziraat Bankası'
-                ],
-                'bank_account' => 'TR330006100519786457841326',
-                'formatted_iban' => 'TR33 0006 1005 1978 6457 8413 26'
-            ];
-
-            // Slack bildirimi gönder
-            $this->slackService->sendTransactionNotification($testTransaction);
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Test bildirimi başarıyla gönderildi'
-            ]);
-        } catch (\Exception $e) {
-            \Log::error('Test notification failed:', [
-                'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
-            ]);
-
-            return response()->json([
-                'success' => false,
-                'message' => 'Test bildirimi gönderilemedi',
-                'error' => $e->getMessage()
-            ], 500);
         }
     }
 }

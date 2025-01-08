@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
 
 use App\Models\Transaction;
 use App\Models\Ticket;
@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Cache;
 use Inertia\Inertia;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
-
+use App\Http\Controllers\Controller;
 class DashboardController extends Controller
 {
     public function index()

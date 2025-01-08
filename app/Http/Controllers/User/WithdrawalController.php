@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
 
 use App\Models\Transaction;
 use Illuminate\Http\Request;
@@ -8,6 +8,7 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
+use App\Http\Controllers\Controller;
 
 class WithdrawalController extends Controller
 {
