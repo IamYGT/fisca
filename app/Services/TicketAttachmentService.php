@@ -45,39 +45,45 @@ class TicketAttachmentService
 
     private function ensureDirectoryExists(string $path): void
     {
-        if (!Storage::disk('public')->exists($path)) {
-            Storage::disk('public')->makeDirectory($path, 0775);
+        if (!Storage::disk('ticket-attachments')->exists($path)) {
+            Storage::disk('ticket-attachments')->makeDirectory($path, 0775, true);
         }
     }
 
     private function uploadSingleFile(UploadedFile $file, string $uploadPath, TicketMessage $message): void
     {
-        $fileName = uniqid() . '_' . Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)) 
-                 . '.' . $file->getClientOriginalExtension();
+        $fileName = Str::random(40) . '.' . $file->getClientOriginalExtension();
+        $relativePath = $uploadPath . '/' . $fileName;
         
-        $fullPath = $uploadPath . '/' . $fileName;
+        try {
+            $uploaded = Storage::disk('ticket-attachments')->putFileAs(
+                $uploadPath,
+                $file,
+                $fileName,
+                ['visibility' => 'public']
+            );
 
-        $uploaded = Storage::disk('public')->putFileAs(
-            $uploadPath,
-            $file,
-            $fileName,
-            ['visibility' => 'public']
-        );
+            if (!$uploaded) {
+                throw new \Exception('Dosya yüklenemedi');
+            }
 
-        if (!$uploaded) {
-            throw new \Exception('Dosya yüklenemedi');
-        }
+            $attachment = $message->attachments()->create([
+                'name' => $file->getClientOriginalName(),
+                'path' => $relativePath,
+                'type' => $file->getMimeType(),
+                'size' => $file->getSize(),
+            ]);
 
-        $attachment = $message->attachments()->create([
-            'name' => $file->getClientOriginalName(),
-            'path' => $fullPath,
-            'type' => $file->getMimeType(),
-            'size' => $file->getSize(),
-            'ticket_message_id' => $message->id
-        ]);
-
-        if (!Storage::disk('public')->exists($fullPath)) {
-            throw new \Exception('Dosya kaydedildi fakat erişilemiyor');
+            if (!Storage::disk('ticket-attachments')->exists($relativePath)) {
+                throw new \Exception('Dosya kaydedildi fakat erişilemiyor');
+            }
+        } catch (\Exception $e) {
+            Log::error('Dosya yükleme hatası:', [
+                'error' => $e->getMessage(),
+                'file' => $file->getClientOriginalName(),
+                'path' => $relativePath
+            ]);
+            throw $e;
         }
     }
 }

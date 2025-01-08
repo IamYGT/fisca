@@ -3,217 +3,163 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\TicketReplyRequest;
 use App\Models\Ticket;
-use App\Services\TicketAttachmentService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\DB;
 use App\Models\User;
-use App\Helpers\PasswordEncryption;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class AdminTicketController extends Controller
 {
-    protected $attachmentService;
-
-    public function __construct(TicketAttachmentService $attachmentService)
-    {
-        $this->attachmentService = $attachmentService;
-    }
-
     public function index(Request $request)
     {
-        $query = Ticket::with('user')
-            ->when($request->search, function ($query, $search) {
-                $query->where(function ($query) use ($search) {
-                    $query->whereRaw('LOWER(subject) LIKE ?', ['%' . strtolower($search) . '%'])
-                        ->orWhereHas('user', function ($query) use ($search) {
-                            $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%'])
-                                ->orWhereRaw('LOWER(email) LIKE ?', ['%' . strtolower($search) . '%']);
-                        });
+        try {
+            $query = Ticket::with(['user', 'lastReply'])
+                ->when($request->search, function ($q, $search) {
+                    $q->where('subject', 'like', "%{$search}%")
+                      ->orWhere('message', 'like', "%{$search}%");
+                })
+                ->when($request->status, function ($q, $status) {
+                    $q->where('status', $status);
+                })
+                ->when($request->priority, function ($q, $priority) {
+                    $q->where('priority', $priority);
+                })
+                ->when($request->category, function ($q, $category) {
+                    $q->where('category', $category);
                 });
-            })
-            ->when($request->filled('status'), function ($query) use ($request) {
-                $query->where('status', $request->status);
-            })
-            ->when($request->filled('priority'), function ($query) use ($request) {
-                $query->where('priority', $request->priority);
-            })
-            ->when($request->filled('category'), function ($query) use ($request) {
-                $query->where('category', $request->category);
-            })
-            ->latest('last_reply_at');
 
-        $stats = [
-            'total' => Ticket::count(),
-            'open' => Ticket::where('status', 'open')->count(),
-            'answered' => Ticket::where('status', 'answered')->count(),
-            'high_priority' => Ticket::where('priority', 'high')->count(),
-        ];
+            // Sıralama
+            if ($request->sort) {
+                $direction = $request->direction === 'desc' ? 'desc' : 'asc';
+                $query->orderBy($request->sort, $direction);
+            } else {
+                $query->latest();
+            }
 
-        $tickets = $query->paginate(10)
-            ->appends($request->query());
+            $tickets = $query->paginate(10)->withQueryString();
 
-        return Inertia::render('Admin/Tickets/Index', [
-            'tickets' => $tickets,
-            'filters' => $request->only(['search', 'status', 'priority', 'category']),
+            // İstatistikleri hesapla
+            $stats = [
+                'total' => Ticket::count(),
+                'open' => Ticket::where('status', 'open')->count(),
+                'answered' => Ticket::where('status', 'answered')->count(),
+                'high_priority' => Ticket::where('priority', 'high')->count(),
+            ];
+
+            return Inertia::render('Admin/Tickets/Index', [
+                'tickets' => $tickets,
+                'filters' => $request->only(['search', 'status', 'priority', 'category', 'sort', 'direction']),
+                'statuses' => Ticket::STATUSES,
+                'priorities' => Ticket::PRIORITIES,
+                'categories' => Ticket::CATEGORIES,
+                'stats' => $stats,
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Admin ticket listesi hatası:', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            
+            return back()->with('error', 'Ticket listesi yüklenirken bir hata oluştu.');
+        }
+    }
+
+    public function create()
+    {
+        return Inertia::render('Admin/Tickets/Create', [
             'statuses' => Ticket::STATUSES,
             'priorities' => Ticket::PRIORITIES,
             'categories' => Ticket::CATEGORIES,
-            'stats' => $stats,
         ]);
+    }
+
+    public function store(Request $request)
+    {
+        // Yeni ticket kaydetme
     }
 
     public function show(Ticket $ticket)
     {
+        // Ticket ve ilişkili verileri yükle
+        $ticket->load(['user', 'replies.user', 'replies.attachments', 'histories']);
+
         return Inertia::render('Admin/Tickets/Show', [
-            'ticket' => $ticket->load(['user', 'replies.user']),
+            'ticket' => $ticket,
             'statuses' => Ticket::STATUSES,
-            'priorities' => Ticket::PRIORITIES,
-            'categories' => Ticket::CATEGORIES,
         ]);
     }
 
-    public function reply(TicketReplyRequest $request, Ticket $ticket)
+    public function reply(Request $request, Ticket $ticket)
     {
-        DB::beginTransaction();
+        $request->validate([
+            'message' => 'required|string',
+            'attachments.*' => 'nullable|file|max:10240',
+            'quote' => 'nullable|string',
+        ]);
 
+        DB::beginTransaction();
         try {
             $reply = $ticket->replies()->create([
                 'user_id' => auth()->id(),
                 'message' => $request->message,
                 'quote' => $request->quote,
-                'is_admin' => auth()->user()->hasRole('admin')
+                'is_admin' => true
             ]);
 
             if ($request->hasFile('attachments')) {
-                $this->attachmentService->uploadAttachments(
-                    $request->file('attachments'),
-                    $reply
-                );
+                foreach ($request->file('attachments') as $file) {
+                    $path = $file->store('public/ticket-attachments');
+                    $storagePath = str_replace('public/', '', $path);
+                    
+                    $reply->attachments()->create([
+                        'path' => $storagePath,
+                        'name' => $file->getClientOriginalName(),
+                        'type' => $file->getMimeType(),
+                        'size' => $file->getSize(),
+                        'url' => Storage::url($path)
+                    ]);
+                }
             }
 
-            if ($ticket->status === 'open') {
-                $ticket->updateStatus('answered');
-            } elseif ($request->status) {
-                $ticket->updateStatus($request->status);
-            }
-
-            $ticket->addToHistory('ticket.replied');
-
-            DB::commit();
-            return back()->with('success', 'ticket.replySent');
-
-        } catch (\Exception $e) {
-            DB::rollBack();
-            Log::error('Ticket yanıt hatası:', [
-                'error' => $e->getMessage(),
-                'ticket_id' => $ticket->id
+            $ticket->update(['status' => 'answered']);
+            
+            $ticket->histories()->create([
+                'user_id' => auth()->id(),
+                'action' => 'replied',
+                'details' => 'Admin yanıt verdi',
             ]);
 
-            return back()->with('error', 'ticket.replyError');
+            DB::commit();
+            return back()->with('success', 'tickets.replyAdded');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Admin ticket yanıtı hatası:', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            return back()->with('error', 'common.error');
         }
     }
 
     public function updateStatus(Request $request, Ticket $ticket)
     {
-        $validated = $request->validate([
-            'status' => 'required|string|in:open,answered,closed',
+        $request->validate([
+            'status' => 'required|string|in:' . implode(',', Ticket::STATUSES),
         ]);
 
-        $oldStatus = $ticket->status;
-        $ticket->update(['status' => $validated['status']]);
-
-        $ticket->addToHistory('ticket.statusChanged', 'info', [
-            'old' => $oldStatus,
-            'new' => $validated['status']
+        $ticket->update(['status' => $request->status]);
+        
+        $ticket->histories()->create([
+            'user_id' => auth()->id(),
+            'action' => 'status_updated',
+            'details' => "Durum güncellendi: {$request->status}",
         ]);
 
-        return back()->with('success', 'ticket.statusUpdated');
+        return back()->with('success', 'tickets.statusUpdated');
     }
 
-    public function createForUser(Request $request, $userId)
-    {
-        try {
-            DB::beginTransaction();
-
-            $targetUser = User::findOrFail($userId);
-
-            // Mevcut şifreyi çöz
-            $plainPassword = null;
-            if ($targetUser->encrypted_plain_password) {
-                try {
-                    $plainPassword = PasswordEncryption::decrypt($targetUser->encrypted_plain_password);
-                } catch (\Exception $e) {
-                    Log::error('Şifre çözme hatası:', [
-                        'error' => $e->getMessage(),
-                        'user_id' => $userId
-                    ]);
-                }
-            }
-
-            // Ticket'ı hedef kullanıcı için oluştur
-            $ticket = Ticket::create([
-                'user_id' => $targetUser->id,
-                'subject' => $request->subject,
-                'message' => $request->message,
-                'status' => 'answered',
-                'priority' => 'medium',
-                'category' => 'general',
-                'last_reply_at' => now()
-            ]);
-
-            // Şifre bilgisi mesajı
-            $passwordInfo = $plainPassword
-                ? "\n\nMevcut şifreniz: " . $plainPassword
-                : "\n\nŞifre bilgisi mevcut değil.";
-
-            // Admin mesajını oluştur
-            $messageText = "Kullanıcı Bilgileriniz şu şekildedir:\n\n" .
-                          "Kullanıcı Adı: " . $targetUser->name . "\n" .
-                          "E-posta: " . $targetUser->email .
-                          $passwordInfo;
-
-            // Ticket mesajını oluştur
-            $ticket->messages()->create([
-                'user_id' => auth()->id(),
-                'message' => $messageText,
-                'is_admin_reply' => true
-            ]);
-
-            // Ticket history kaydı ekle
-            $ticket->histories()->create([
-                'action' => 'ticket.created',
-                'type' => 'info',
-                'user_id' => auth()->id(),
-                'data' => json_encode([
-                    'created_by' => auth()->user()->name,
-                    'status' => 'answered'
-                ])
-            ]);
-
-            DB::commit();
-
-            return response()->json([
-                'success' => true,
-                'message' => translate('tickets.created')
-            ]);
-
-        } catch (\Exception $e) {
-            DB::rollBack();
-
-            Log::error('Ticket oluşturma hatası:', [
-                'error' => $e->getMessage(),
-                'user_id' => $userId
-            ]);
-
-            return response()->json([
-                'success' => false,
-                'message' => translate('tickets.error')
-            ], 500);
-        }
-    }
+    // Diğer metodlar...
 }

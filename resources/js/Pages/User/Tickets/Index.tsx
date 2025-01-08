@@ -89,7 +89,7 @@ export default function Index({ auth, tickets, stats }: Props) {
                     {/* Yeni Ticket Oluştur Butonu */}
                     <div className="mb-6">
                         <Link
-                            href={route('user.tickets.create')}
+                            href={route('management.user.tickets.create')}
                             className="inline-flex items-center rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700"
                         >
                             <FaTicketAlt className="mr-2" />
@@ -148,7 +148,7 @@ export default function Index({ auth, tickets, stats }: Props) {
                                             <td className="whitespace-nowrap px-6 py-4 text-right text-sm font-medium">
                                                 <Link
                                                     href={route(
-                                                        'tickets.show',
+                                                        'management.user.tickets.show',
                                                         ticket.id,
                                                     )}
                                                     className="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300"

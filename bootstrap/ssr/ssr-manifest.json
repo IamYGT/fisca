@@ -1,7 +1,7 @@
 {
   "node_modules/laravel-vite-plugin/inertia-helpers/index.js": [],
   "node_modules/react-circular-progressbar/dist/styles.css": [
-    "https://fisca.org.uk/build/assets/Dashboard-CiHaNIy7.js",
+    "https://fisca.org.uk/build/assets/Dashboard-DcU8PEiO.js",
     "https://fisca.org.uk/build/assets/Dashboard-CCNfw6fC.css"
   ],
   "node_modules/react-toastify/dist/ReactToastify.css": [
@@ -9,7 +9,7 @@
     "https://fisca.org.uk/build/assets/Register-BEzrRqYo.css"
   ],
   "node_modules/tippy.js/dist/tippy.css": [
-    "https://fisca.org.uk/build/assets/AuthenticatedLayout-Bdcvct4s.js",
+    "https://fisca.org.uk/build/assets/AuthenticatedLayout-B41ZkwdL.js",
     "https://fisca.org.uk/build/assets/AuthenticatedLayout-BHH8rdGj.css"
   ],
   "resources/js/Components/ApplicationLogo.tsx": [
@@ -22,7 +22,10 @@
     "https://fisca.org.uk/build/assets/SecondaryButton-Jyhki9mO.js"
   ],
   "resources/js/Components/DeleteConfirmationModal.tsx": [
-    "https://fisca.org.uk/build/assets/UserIbanIndex-DCSBf--m.js"
+    "https://fisca.org.uk/build/assets/UserIbanIndex-Cg5a8CDA.js"
+  ],
+  "resources/js/Components/ErrorBoundary.tsx": [
+    "https://fisca.org.uk/build/assets/Index-roU9iKRm.js"
   ],
   "resources/js/Components/InputError.tsx": [
     "https://fisca.org.uk/build/assets/InputError-roYfmLKp.js"
@@ -43,7 +46,7 @@
     "https://fisca.org.uk/build/assets/SecondaryButton-Jyhki9mO.js"
   ],
   "resources/js/Components/StatCard.tsx": [
-    "https://fisca.org.uk/build/assets/Index-D5-S7RKG.js"
+    "https://fisca.org.uk/build/assets/Index-D4Ant0qe.js"
   ],
   "resources/js/Components/TextInput.tsx": [
     "https://fisca.org.uk/build/assets/TextInput-CN3Z7KIl.js"
@@ -52,33 +55,33 @@
     "https://fisca.org.uk/build/assets/TranslationContext-BjzEj_91.js"
   ],
   "resources/js/Hooks/useRole.ts": [
-    "https://fisca.org.uk/build/assets/AuthenticatedLayout-Bdcvct4s.js",
+    "https://fisca.org.uk/build/assets/AuthenticatedLayout-B41ZkwdL.js",
     "https://fisca.org.uk/build/assets/AuthenticatedLayout-BHH8rdGj.css"
   ],
   "resources/js/Layouts/AuthenticatedLayout.tsx": [
-    "https://fisca.org.uk/build/assets/AuthenticatedLayout-Bdcvct4s.js",
+    "https://fisca.org.uk/build/assets/AuthenticatedLayout-B41ZkwdL.js",
     "https://fisca.org.uk/build/assets/AuthenticatedLayout-BHH8rdGj.css"
   ],
   "resources/js/Layouts/GuestLayout.tsx": [
     "https://fisca.org.uk/build/assets/GuestLayout-B9k0PQV6.js"
   ],
   "resources/js/Layouts/Header.tsx": [
-    "https://fisca.org.uk/build/assets/AuthenticatedLayout-Bdcvct4s.js",
+    "https://fisca.org.uk/build/assets/AuthenticatedLayout-B41ZkwdL.js",
     "https://fisca.org.uk/build/assets/AuthenticatedLayout-BHH8rdGj.css"
   ],
   "resources/js/Layouts/LanguageSelector.tsx": [
     "https://fisca.org.uk/build/assets/ApplicationLogo-B9pIlq8y.js"
   ],
   "resources/js/Layouts/LogoutModal.tsx": [
-    "https://fisca.org.uk/build/assets/AuthenticatedLayout-Bdcvct4s.js",
+    "https://fisca.org.uk/build/assets/AuthenticatedLayout-B41ZkwdL.js",
     "https://fisca.org.uk/build/assets/AuthenticatedLayout-BHH8rdGj.css"
   ],
   "resources/js/Layouts/NavLink.tsx": [
-    "https://fisca.org.uk/build/assets/AuthenticatedLayout-Bdcvct4s.js",
+    "https://fisca.org.uk/build/assets/AuthenticatedLayout-B41ZkwdL.js",
     "https://fisca.org.uk/build/assets/AuthenticatedLayout-BHH8rdGj.css"
   ],
   "resources/js/Layouts/Sidebar.tsx": [
-    "https://fisca.org.uk/build/assets/AuthenticatedLayout-Bdcvct4s.js",
+    "https://fisca.org.uk/build/assets/AuthenticatedLayout-B41ZkwdL.js",
     "https://fisca.org.uk/build/assets/AuthenticatedLayout-BHH8rdGj.css"
   ],
   "resources/js/Layouts/ThemeToggle.tsx": [
@@ -88,7 +91,7 @@
     "https://fisca.org.uk/build/assets/ApplicationLogo-B9pIlq8y.js"
   ],
   "resources/js/Pages/Admin/AdminDashboard.tsx": [
-    "https://fisca.org.uk/build/assets/AdminDashboard-DEPZ7ag0.js"
+    "https://fisca.org.uk/build/assets/AdminDashboard-j6zSGHkN.js"
   ],
   "resources/js/Pages/Admin/Tickets/Components/Badges.tsx": [
     "https://fisca.org.uk/build/assets/Badges-BMp3kczU.js"
@@ -106,7 +109,7 @@
     "https://fisca.org.uk/build/assets/StatCard-CaHYIKS9.js"
   ],
   "resources/js/Pages/Admin/Tickets/Components/StatusSelect.tsx": [
-    "https://fisca.org.uk/build/assets/StatusSelect-CeryoOjT.js"
+    "https://fisca.org.uk/build/assets/StatusSelect-CvN9PO-v.js"
   ],
   "resources/js/Pages/Admin/Tickets/Components/TicketHistoryPanel.tsx": [
     "https://fisca.org.uk/build/assets/TicketHistoryPanel-B1uEXylk.js"
@@ -115,34 +118,34 @@
     "https://fisca.org.uk/build/assets/UserInfoPanel-a3qwK-wb.js"
   ],
   "resources/js/Pages/Admin/Tickets/Index.tsx": [
-    "https://fisca.org.uk/build/assets/Index-CZhOcGd4.js"
+    "https://fisca.org.uk/build/assets/Index-roU9iKRm.js"
   ],
   "resources/js/Pages/Admin/Tickets/Show.tsx": [
-    "https://fisca.org.uk/build/assets/Show-DwJE7efC.js"
+    "https://fisca.org.uk/build/assets/Show-B3G0mPop.js"
   ],
   "resources/js/Pages/Admin/Tickets/utils.ts": [
     "https://fisca.org.uk/build/assets/MessageBubble-C8JrjYwr.js"
   ],
   "resources/js/Pages/Admin/Transactions/Edit.tsx": [
-    "https://fisca.org.uk/build/assets/Edit-Yclt3fbd.js"
+    "https://fisca.org.uk/build/assets/Edit-DKY9JBlI.js"
   ],
   "resources/js/Pages/Admin/Transactions/Index.tsx": [
-    "https://fisca.org.uk/build/assets/Index-CHCozvN5.js"
+    "https://fisca.org.uk/build/assets/Index-DytISPzl.js"
   ],
   "resources/js/Pages/Admin/Transactions/Show.tsx": [
-    "https://fisca.org.uk/build/assets/Show-wH3-RgJx.js"
+    "https://fisca.org.uk/build/assets/Show-BTsjnR-K.js"
   ],
   "resources/js/Pages/Admin/Users/Create.tsx": [
-    "https://fisca.org.uk/build/assets/Create-DRh51IgC.js"
+    "https://fisca.org.uk/build/assets/Create-BOvqf2kl.js"
   ],
   "resources/js/Pages/Admin/Users/Edit.tsx": [
-    "https://fisca.org.uk/build/assets/Edit-BXxEqhUI.js"
+    "https://fisca.org.uk/build/assets/Edit-fJPtN8KZ.js"
   ],
   "resources/js/Pages/Admin/Users/Index.tsx": [
-    "https://fisca.org.uk/build/assets/Index-BIvR1ScA.js"
+    "https://fisca.org.uk/build/assets/Index-Bxip1yww.js"
   ],
   "resources/js/Pages/Admin/Users/ResetPassword.tsx": [
-    "https://fisca.org.uk/build/assets/ResetPassword-BbvuOZmm.js"
+    "https://fisca.org.uk/build/assets/ResetPassword-C4swiBTU.js"
   ],
   "resources/js/Pages/Auth/ConfirmPassword.tsx": [
     "https://fisca.org.uk/build/assets/ConfirmPassword-CpNLfjQL.js"
@@ -151,27 +154,45 @@
     "https://fisca.org.uk/build/assets/ForgotPassword-BryxFjsc.js"
   ],
   "resources/js/Pages/Auth/Login.tsx": [
-    "https://fisca.org.uk/build/assets/Login-CAy47dRp.js"
+    "https://fisca.org.uk/build/assets/Login-CnETEq3k.js"
   ],
   "resources/js/Pages/Auth/Register.tsx": [
     "https://fisca.org.uk/build/assets/Register-Cj89Dg8r.js",
     "https://fisca.org.uk/build/assets/Register-BEzrRqYo.css"
   ],
   "resources/js/Pages/Auth/ResetPassword.tsx": [
-    "https://fisca.org.uk/build/assets/ResetPassword-DbLS8YgA.js"
+    "https://fisca.org.uk/build/assets/ResetPassword-HfD_xBgK.js"
   ],
   "resources/js/Pages/Auth/VerifyEmail.tsx": [
     "https://fisca.org.uk/build/assets/VerifyEmail-RqdYtdjT.js"
   ],
+  "resources/js/Pages/Front-site/Features.tsx": [
+    "https://fisca.org.uk/build/assets/Features-BRp2DbhY.js"
+  ],
+  "resources/js/Pages/Front-site/Footer.tsx": [
+    "https://fisca.org.uk/build/assets/Footer-CmrxVAPM.js"
+  ],
+  "resources/js/Pages/Front-site/Header.tsx": [
+    "https://fisca.org.uk/build/assets/Header-B--zoGwX.js"
+  ],
+  "resources/js/Pages/Front-site/Home.tsx": [
+    "https://fisca.org.uk/build/assets/Home-DxGk3BHl.js"
+  ],
+  "resources/js/Pages/Front-site/News.tsx": [
+    "https://fisca.org.uk/build/assets/News-QjgCOwUy.js"
+  ],
+  "resources/js/Pages/Front-site/Stats.tsx": [
+    "https://fisca.org.uk/build/assets/Stats-CO-nqWOM.js"
+  ],
   "resources/js/Pages/User/Dashboard.tsx": [
-    "https://fisca.org.uk/build/assets/Dashboard-CiHaNIy7.js",
+    "https://fisca.org.uk/build/assets/Dashboard-DcU8PEiO.js",
     "https://fisca.org.uk/build/assets/Dashboard-CCNfw6fC.css"
   ],
   "resources/js/Pages/User/Profile/Edit.tsx": [
-    "https://fisca.org.uk/build/assets/Edit-8NWjf92J.js"
+    "https://fisca.org.uk/build/assets/Edit-UUCAo1PY.js"
   ],
   "resources/js/Pages/User/Profile/Ibans/UserIbanIndex.tsx": [
-    "https://fisca.org.uk/build/assets/UserIbanIndex-DCSBf--m.js"
+    "https://fisca.org.uk/build/assets/UserIbanIndex-Cg5a8CDA.js"
   ],
   "resources/js/Pages/User/Profile/Partials/DeleteUserForm.tsx": [
     "https://fisca.org.uk/build/assets/DeleteUserForm-DyQ28nrs.js"
@@ -192,19 +213,19 @@
     "https://fisca.org.uk/build/assets/UpdateProfileInformationForm-CEOnQvfq.js"
   ],
   "resources/js/Pages/User/Tickets/Create.tsx": [
-    "https://fisca.org.uk/build/assets/Create-KWW1ah38.js"
+    "https://fisca.org.uk/build/assets/Create-BmwMXnMf.js"
   ],
   "resources/js/Pages/User/Tickets/Index.tsx": [
-    "https://fisca.org.uk/build/assets/Index-D5-S7RKG.js"
+    "https://fisca.org.uk/build/assets/Index-D4Ant0qe.js"
   ],
   "resources/js/Pages/User/Tickets/Show.tsx": [
-    "https://fisca.org.uk/build/assets/Show-f-u8wqbe.js"
+    "https://fisca.org.uk/build/assets/Show-CqYDEWLs.js"
   ],
   "resources/js/Pages/User/Transactions/History.tsx": [
-    "https://fisca.org.uk/build/assets/History-CA8f9PBz.js"
+    "https://fisca.org.uk/build/assets/History-174wJRwI.js"
   ],
   "resources/js/Pages/User/Transactions/Show.tsx": [
-    "https://fisca.org.uk/build/assets/Show-Ddhd59zK.js"
+    "https://fisca.org.uk/build/assets/Show-BTo8J_5C.js"
   ],
   "resources/js/Pages/User/Withdrawals/ComponentWithdrawal/CryptoWithdrawalForm.tsx": [
     "https://fisca.org.uk/build/assets/CryptoWithdrawalForm-CFP7Cz7p.js"
@@ -219,7 +240,7 @@
     "https://fisca.org.uk/build/assets/WithdrawalMethodSelector-CCJBgPmu.js"
   ],
   "resources/js/Pages/User/Withdrawals/Create.tsx": [
-    "https://fisca.org.uk/build/assets/Create-CwJUdyND.js"
+    "https://fisca.org.uk/build/assets/Create-DHXrf9ec.js"
   ],
   "resources/js/Utils/themeManager.tsx": [
     "https://fisca.org.uk/build/assets/ApplicationLogo-B9pIlq8y.js"

@@ -180,7 +180,7 @@ class WithdrawalController extends Controller
                 \Log::info('Transaction history added');
 
                 return redirect()
-                    ->route('transactions.pending')
+                    ->route('management.user.transactions.pending')
                     ->with('success', translate('withdrawal.requestCreated'));
 
             } catch (\Exception $e) {

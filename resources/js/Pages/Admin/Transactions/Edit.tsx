@@ -164,7 +164,7 @@ export default function Edit({ auth, transaction, statuses }: Props) {
                     <div className="mb-6 flex items-center justify-between rounded-xl bg-white p-4 shadow-sm dark:bg-gray-800">
                         <div className="flex items-center space-x-4">
                             <Link
-                                href={route('admin.transactions.show', transaction.id)}
+                                href={route('management.admin.transactions.show', transaction.id)}
                                 className="flex items-center rounded-lg bg-gray-100 px-3 py-2 text-gray-600 transition-all duration-200 hover:text-gray-900 hover:shadow-md dark:bg-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                             >
                                 <FaArrowLeft className="mr-2 h-4 w-4" />
@@ -401,7 +401,7 @@ export default function Edit({ auth, transaction, statuses }: Props) {
                                         {/* Form Aksiyonları */}
                                         <div className="flex justify-end space-x-4 pt-4">
                                             <Link
-                                                href={route('admin.transactions.show', transaction.id)}
+                                                href={route('management.admin.transactions.show', transaction.id)}
                                                 className="group inline-flex items-center rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-700 shadow-sm transition-all duration-200 hover:bg-gray-50 hover:text-gray-900 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white"
                                             >
                                                 <FaTimes className="mr-2 h-4 w-4 transition-transform group-hover:scale-110" />

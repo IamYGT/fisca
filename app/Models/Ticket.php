@@ -26,9 +26,9 @@ class Ticket extends Model
         'closed_at' => 'datetime'
     ];
 
-    const STATUSES = ['open', 'answered', 'closed'];
-    const PRIORITIES = ['low', 'medium', 'high'];
-    const CATEGORIES = ['general', 'technical', 'billing', 'other'];
+    public const STATUSES = ['open', 'answered', 'closed'];
+    public const PRIORITIES = ['low', 'medium', 'high'];
+    public const CATEGORIES = ['general', 'technical', 'billing', 'other'];
 
     public function user(): BelongsTo
     {

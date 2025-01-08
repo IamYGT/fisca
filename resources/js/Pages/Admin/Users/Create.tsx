@@ -72,7 +72,7 @@ export default function CreateUser({ auth, languages, secili_dil }: CreateUserPr
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
         if (passwordsMatch && isValidEmail && passwordStrength >= 2) {
-            post(route('admin.users.store'), {
+            post(route('management.admin.users.store'), {
                 onSuccess: () => {
                     toast.success(t('users.createSuccess'));
                 },

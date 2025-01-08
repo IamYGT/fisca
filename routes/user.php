@@ -16,7 +16,10 @@ use Illuminate\Support\Facades\Route;
 | User Routes
 |--------------------------------------------------------------------------
 */
-Route::middleware(['auth', 'verified', 'role:user'])->prefix('user')->name('user.')->group(function () {
+Route::middleware(['auth', 'verified', 'role:user'])
+    ->prefix('management/user')
+    ->name('management.user.')
+    ->group(function () {
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     
@@ -36,23 +39,11 @@ Route::middleware(['auth', 'verified', 'role:user'])->prefix('user')->name('user
 
     // Tickets
     Route::prefix('tickets')->name('tickets.')->group(function () {
-        Route::get('/', [TicketController::class, 'index'])
-            ->name('index')
-            ->defaults('component', 'User/Tickets/Index');
-
-        Route::get('/create', [TicketController::class, 'create'])
-            ->name('create')
-            ->defaults('component', 'User/Tickets/Create');
-
-        Route::post('/', [TicketController::class, 'store'])
-            ->name('store');
-
-        Route::get('/{ticket}', [TicketController::class, 'show'])
-            ->name('show')
-            ->defaults('component', 'User/Tickets/Show');
-
-        Route::post('/{ticket}/reply', [TicketController::class, 'reply'])
-            ->name('reply');
+        Route::get('/', [TicketController::class, 'index'])->name('index');
+        Route::get('/create', [TicketController::class, 'create'])->name('create');
+        Route::post('/', [TicketController::class, 'store'])->name('store');
+        Route::get('/{ticket}', [TicketController::class, 'show'])->name('show');
+        Route::post('/{ticket}/reply', [TicketController::class, 'reply'])->name('reply');
     });
 
     // Withdrawals

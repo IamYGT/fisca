@@ -28,15 +28,7 @@ class TicketAttachment extends Model
         }
 
         try {
-            if (!Storage::disk('public')->exists($this->path)) {
-                Log::warning('Dosya bulunamadı', [
-                    'attachment_id' => $this->id,
-                    'path' => $this->path
-                ]);
-                return null;
-            }
-
-            return Storage::disk('public')->url($this->path);
+            return Storage::disk('ticket-attachments')->url($this->path);
         } catch (\Exception $e) {
             Log::error('Dosya URL oluşturma hatası:', [
                 'attachment_id' => $this->id,
@@ -59,9 +51,9 @@ class TicketAttachment extends Model
         static::deleting(function ($attachment) {
             if ($attachment->path) {
                 try {
-                    Storage::disk('public')->delete($attachment->path);
+                    Storage::disk('ticket-attachments')->delete($attachment->path);
                 } catch (\Exception $e) {
-                    Log::error('Dosya silme hatası: ' . $e->getMessage(), [
+                    Log::error('Dosya silme hatası:', [
                         'path' => $attachment->path,
                         'error' => $e->getMessage()
                     ]);

@@ -31,27 +31,27 @@ interface MenuItem {
 const userMenuItems: MenuItem[] = [
     {
         name: 'sidebar.dashboard',
-        route: 'user.dashboard',
+        route: 'management.user.dashboard',
         icon: <MdDashboard className="h-5 w-5 sm:h-6 sm:w-6" />,
     },
     {
         name: 'sidebar.transactions',
-        route: 'user.transactions.history',
+        route: 'management.user.transactions.history',
         icon: <MdPayment className="h-5 w-5 sm:h-6 sm:w-6" />,
     },
     {
         name: 'sidebar.withdrawals',
-        route: 'user.withdrawals.create',
+        route: 'management.user.withdrawals.create',
         icon: <MdMoneyOff className="h-5 w-5 sm:h-6 sm:w-6" />,
     },
     {
         name: 'sidebar.tickets',
-        route: 'user.tickets.index',
+        route: 'management.user.tickets.index',
         icon: <MdConfirmationNumber className="h-5 w-5 sm:h-6 sm:w-6" />,
     },
     {
         name: 'sidebar.ibans',
-        route: 'user.profile.ibans.index',
+        route: 'management.user.profile.ibans.index',
         icon: <MdAccountBalance className="h-5 w-5 sm:h-6 sm:w-6" />,
     },
 ];
@@ -60,22 +60,22 @@ const userMenuItems: MenuItem[] = [
 const adminMenuItems: MenuItem[] = [
     {
         name: 'sidebar.dashboard',
-        route: 'admin.dashboard',
+        route: 'management.admin.dashboard',
         icon: <MdDashboard className="h-5 w-5 sm:h-6 sm:w-6" />,
     },
     {
         name: 'sidebar.userManagement',
-        route: 'admin.users.index',
+        route: 'management.admin.users.index',
         icon: <MdGroup className="h-5 w-5 sm:h-6 sm:w-6" />,
     },
     {
         name: 'sidebar.transactions',
-        route: 'admin.transactions.index',
+        route: 'management.admin.transactions.index',
         icon: <MdPayment className="h-5 w-5 sm:h-6 sm:w-6" />,
     },
     {
         name: 'sidebar.tickets',
-        route: 'admin.tickets.index',
+        route: 'management.admin.tickets.index',
         icon: <MdConfirmationNumber className="h-5 w-5 sm:h-6 sm:w-6" />,
     },
 ];
@@ -270,8 +270,8 @@ const Sidebar: React.FC<SidebarProps> = ({
                             >
                                 <div>
                                     <NavLink
-                                        href={route('profile.edit')}
-                                        active={route().current('profile.edit')}
+                                        href={route('management.profile.edit')}
+                                        active={route().current('management.profile.edit')}
                                         darkMode={darkMode}
                                         collapsed={isMobile ? false : collapsed}
                                         icon={

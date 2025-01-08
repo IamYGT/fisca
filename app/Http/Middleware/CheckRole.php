@@ -16,16 +16,16 @@ class CheckRole
 
         if (!$request->user()->hasRole($role)) {
             if ($request->user()->hasRole('admin')) {
-                return redirect()->route('admin.dashboard');
+                return redirect()->route('management.admin.dashboard');
             }
 
             if ($request->user()->hasRole('user')) {
-                return redirect()->route('user.dashboard');
+                return redirect()->route('management.user.dashboard');
             }
 
             // Eğer rol atanmamışsa varsayılan olarak user rolü ata
             $request->user()->assignRole('user');
-            return redirect()->route('user.dashboard');
+            return redirect()->route('management.user.dashboard');
         }
 
         return $next($request);

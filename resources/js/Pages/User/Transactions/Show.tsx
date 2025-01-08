@@ -378,7 +378,7 @@ export default function Show({ auth, transaction, banks }: Props) {
                                     </p>
                                 </div>
                                 <Link
-                                    href={route('tickets.create', {
+                                    href={route('user.tickets.create', {
                                         transaction: transaction.id,
                                         subject: `İşlem Destek Talebi #${transaction.reference_id}`,
                                         message: `Bu işlemle ilgili destek talebim var.\n\n` +

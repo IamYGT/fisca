@@ -6,6 +6,8 @@ import React, { useEffect, useState } from 'react';
 import Header from './Header';
 import LogoutModal from './LogoutModal';
 import Sidebar from './Sidebar';
+import { Link } from '@inertiajs/react';
+import { MdPerson } from 'react-icons/md';
 
 interface Props {
     auth: {

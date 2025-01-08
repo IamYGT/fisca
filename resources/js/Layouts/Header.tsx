@@ -388,7 +388,7 @@ const Header: React.FC<HeaderProps> = ({
                                     )}
 
                                     <Link
-                                        href={route('profile.edit')}
+                                        href={route('management.profile.edit')}
                                         className={dropdownItemClasses()}
                                     >
                                         <MdPerson className="mr-2 h-5 w-5" />

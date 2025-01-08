@@ -56,8 +56,9 @@ interface DashboardProps {
 export default function Dashboard({ auth, stats }: DashboardProps) {
     const { t } = useTranslation();
 
-    const handleCardClick = (route: string, params = {}) => {
-        router.visit(route, { data: params });
+    const handleCardClick = (path: string) => {
+        const updatedPath = path.replace('/admin/', '/management/admin/');
+        router.visit(updatedPath);
     };
 
     const [viewMode, setViewMode] = useState<'list' | 'grid'>('list');
@@ -85,8 +86,11 @@ export default function Dashboard({ auth, stats }: DashboardProps) {
     };
 
     const handleActivityClick = (activity: RecentActivity) => {
-        const route = `/admin/${activity.type}s/${activity.id}`;
-        router.visit(route);
+        if (activity.type === 'transaction') {
+            router.visit(route('management.admin.transactions.show', activity.id));
+        } else if (activity.type === 'ticket') {
+            router.visit(route('management.admin.tickets.show', activity.id));
+        }
     };
 
     const filterActivities = useCallback(() => {
@@ -167,7 +171,7 @@ export default function Dashboard({ auth, stats }: DashboardProps) {
                     <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
                         {/* Kullanıcı İstatistikleri */}
                         <div
-                            onClick={() => handleCardClick('/admin/users')}
+                            onClick={() => router.visit(route('management.admin.users.index'))}
                             className="group cursor-pointer overflow-hidden rounded-xl bg-gradient-to-br from-blue-50 to-blue-100 p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg dark:from-blue-900/30 dark:to-blue-800/30"
                         >
                             <div className="flex items-center justify-between">
@@ -197,9 +201,7 @@ export default function Dashboard({ auth, stats }: DashboardProps) {
                         {/* Destek Talepleri */}
                         <div
                             onClick={() =>
-                                handleCardClick('/admin/tickets', {
-                                    status: 'open',
-                                })
+                                router.visit(route('management.admin.tickets.index'))
                             }
                             className="group cursor-pointer overflow-hidden rounded-xl bg-gradient-to-br from-amber-50 to-amber-100 p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg dark:from-amber-900/30 dark:to-amber-800/30"
                         >
@@ -235,7 +237,7 @@ export default function Dashboard({ auth, stats }: DashboardProps) {
                         {/* İşlem İstatistikleri */}
                         <div
                             onClick={() =>
-                                handleCardClick('/admin/transactions')
+                                router.visit(route('management.admin.transactions.index'))
                             }
                             className="group cursor-pointer overflow-hidden rounded-xl bg-gradient-to-br from-green-50 to-green-100 p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg dark:from-green-900/30 dark:to-green-800/30"
                         >
@@ -270,9 +272,7 @@ export default function Dashboard({ auth, stats }: DashboardProps) {
                         {/* Toplam İşlem Hacmi */}
                         <div
                             onClick={() =>
-                                handleCardClick('/admin/transactions', {
-                                    status: 'completed',
-                                })
+                                router.visit(route('management.admin.transactions.index'))
                             }
                             className="group cursor-pointer overflow-hidden rounded-xl bg-gradient-to-br from-purple-50 to-purple-100 p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg dark:from-purple-900/30 dark:to-purple-800/30"
                         >

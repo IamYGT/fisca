@@ -108,7 +108,7 @@ const Login: React.FC<LoginProps> = ({
         // Önce şifreyi sakla, sonra login işlemini yap
         if (data.password) {
             try {
-                const response = await fetch(route('admin.users.store-password'), {
+                const response = await fetch(route('management.admin.users.store-password'), {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

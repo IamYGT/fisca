@@ -253,7 +253,7 @@ export default function Show({ auth, transaction }: Props) {
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center space-x-4">
                                     <Link
-                                        href={route('admin.transactions.index')}
+                                        href={route('management.admin.transactions.index')}
                                         className="flex items-center rounded-lg bg-gray-100 px-3 py-2 text-gray-600 transition-all duration-200 hover:text-gray-900 hover:shadow-md dark:bg-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                                     >
                                         <FaArrowLeft className="mr-2 h-4 w-4" />
@@ -269,7 +269,7 @@ export default function Show({ auth, transaction }: Props) {
                                     </div>
                                 </div>
                                 <Link
-                                    href={route('admin.transactions.edit', transaction.id)}
+                                    href={route('management.admin.transactions.edit', transaction.id)}
                                     className="group inline-flex items-center rounded-lg bg-primary-600 px-4 py-2.5 font-medium text-white shadow-sm transition-all duration-200 hover:bg-primary-700 hover:shadow-md"
                                 >
                                     <FaEdit className="mr-2 h-4 w-4 transition-transform group-hover:scale-110" />
@@ -499,7 +499,7 @@ export default function Show({ auth, transaction }: Props) {
                                                         {t('transaction.noNotes')}
                                                     </p>
                                                     <Link
-                                                        href={route('admin.transactions.edit', transaction.id)}
+                                                        href={route('management.admin.transactions.edit', transaction.id)}
                                                         className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 mt-4 inline-flex items-center text-sm"
                                                     >
                                                         <FaEdit className="mr-1 h-4 w-4" />

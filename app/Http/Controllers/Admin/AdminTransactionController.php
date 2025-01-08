@@ -161,7 +161,7 @@ class AdminTransactionController extends Controller
         }
 
         return redirect()
-            ->route('admin.transactions.index')
+            ->route('management.admin.transactions.index')
             ->with('success', translate('transaction.statusUpdated'));
     }
 

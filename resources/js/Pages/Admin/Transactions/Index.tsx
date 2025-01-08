@@ -745,13 +745,13 @@ export default function Index({
                                             <td className="px-4 py-3">
                                                 <div className="flex justify-end gap-1">
                                                     <Link
-                                                        href={route('admin.transactions.show', transaction.id)}
+                                                        href={route('management.admin.transactions.show', transaction.id)}
                                                         className="p-1 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
                                                     >
                                                         <FaEye className="h-4 w-4" />
                                                     </Link>
                                                     <Link
-                                                        href={route('admin.transactions.edit', transaction.id)}
+                                                        href={route('management.admin.transactions.edit', transaction.id)}
                                                         className="p-1 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
                                                     >
                                                         <FaEdit className="h-4 w-4" />

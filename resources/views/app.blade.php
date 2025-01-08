@@ -24,9 +24,9 @@
         </style>
 
         <!-- Scripts -->
-        @routes
+        @routes(['admin', 'user'])
         @viteReactRefresh
-        @vite(['resources/js/app.tsx', "resources/js/Pages/User/Dashboard.tsx"])
+        @vite(['resources/js/app.tsx', "resources/js/Pages/{$page['component']}.tsx"])
         @inertiaHead
     </head>
     <body class="font-sans antialiased">

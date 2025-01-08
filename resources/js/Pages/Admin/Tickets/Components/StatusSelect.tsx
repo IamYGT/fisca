@@ -45,17 +45,17 @@ export default function StatusSelect({
         formData.append('status', newStatus);
 
         try {
-            await router.post(
-                route('admin.tickets.update-status', ticketId),
+            await router.put(
+                route('management.admin.tickets.update-status', ticketId),
                 {
-                    _method: 'PUT',
                     status: newStatus,
                 },
                 {
                     preserveScroll: true,
+                    preserveState: true,
                     onSuccess: () => {
                         onChange(newStatus);
-                        toast.success(t('ticket.statusUpdated'));
+                        toast.success(t('tickets.statusUpdated'));
                     },
                     onError: () => {
                         toast.error(t('common.error'));

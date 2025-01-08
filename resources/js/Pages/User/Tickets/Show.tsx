@@ -458,7 +458,7 @@ export default function Show({ auth, ticket, statuses }: Props) {
                         onChange={(e) => {
                             const newStatus = e.target.value;
                             router.post(
-                                route('tickets.update-status', ticket.id),
+                                route('user.tickets.update-status', ticket.id),
                                 {
                                     status: newStatus,
                                 },

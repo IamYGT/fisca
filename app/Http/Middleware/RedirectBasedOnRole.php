@@ -14,17 +14,12 @@ class RedirectBasedOnRole
             $user = Auth::user();
             
             if ($user->hasRole('admin')) {
-                // Admin kullanıcısı user route'larına erişmeye çalışıyorsa
-                if ($request->routeIs('dashboard') || 
-                    $request->routeIs('withdrawal.*') || 
-                    $request->routeIs('transactions.*') || 
-                    $request->routeIs('tickets.*')) {
-                    return redirect()->route('admin.dashboard');
+                if ($request->routeIs('management.user.*')) {
+                    return redirect()->route('management.admin.dashboard');
                 }
             } else {
-                // Normal kullanıcı admin route'larına erişmeye çalışıyorsa
-                if ($request->routeIs('admin.*')) {
-                    return redirect()->route('dashboard');
+                if ($request->routeIs('management.admin.*')) {
+                    return redirect()->route('management.user.dashboard');
                 }
             }
         }

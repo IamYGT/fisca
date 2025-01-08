@@ -45,7 +45,7 @@ class ProfileController extends Controller
                 'user_id' => $request->user()?->id
             ]);
             
-            return redirect()->route('dashboard')
+            return redirect()->route('management.dashboard')
                 ->with('error', 'Profil sayfası yüklenirken bir hata oluştu.');
         }
     }
@@ -63,7 +63,7 @@ class ProfileController extends Controller
 
         $request->user()->save();
 
-        return Redirect::route('profile.edit');
+        return Redirect::route('management.profile.edit');
     }
 
     /**

@@ -14,6 +14,9 @@ use App\Http\Controllers\Auth\{
     FacebookController,
     GitHubController
 };
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Admin\AdminTicketController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -50,26 +53,33 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         try {
             if ($user->hasRole('admin')) {
-                return redirect()->route('admin.dashboard');
+                return redirect()->route('management.admin.dashboard');
             }
 
             if ($user->hasRole('user')) {
-                return redirect()->route('user.dashboard');
+                return redirect()->route('management.user.dashboard');
             }
 
             // Eğer rol atanmamışsa varsayılan olarak user rolü ata
             $userRole = Role::where('name', 'user')->firstOrFail();
             $user->assignRole($userRole);
 
-            return redirect()->route('user.dashboard');
+            return redirect()->route('management.user.dashboard');
         } catch (\Exception $e) {
             Log::error('Role check error:', [
                 'error' => $e->getMessage(),
                 'user_id' => $user->id
             ]);
-            return redirect()->route('user.dashboard');
+            return redirect()->route('management.user.dashboard');
         }
     })->name('dashboard');
+
+    // Profile routes
+    Route::prefix('management/profile')->name('management.profile.')->group(function () {
+        Route::get('/edit', [ProfileController::class, 'edit'])->name('edit');
+        Route::patch('/', [ProfileController::class, 'update'])->name('update');
+        Route::delete('/', [ProfileController::class, 'destroy'])->name('destroy');
+    });
 });
 
 /*
@@ -116,6 +126,31 @@ Route::get('storage/ticket-attachments/{year}/{month}/{day}/{filename}', functio
     'day' => '[0-9]{2}',
     'filename' => '[a-zA-Z0-9_\-\.]+',
 ])->middleware(['auth', 'verified']);
+
+/*
+|--------------------------------------------------------------------------
+| Admin Ticket Routes
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth', 'role:admin'])->prefix('management/admin')->name('management.admin.')->group(function () {
+    Route::resource('tickets', AdminTicketController::class)->names([
+        'index' => 'tickets.index',
+        'create' => 'tickets.create',
+        'store' => 'tickets.store',
+        'show' => 'tickets.show',
+    ])->except(['create']);
+
+    Route::get('tickets/create/{user?}', [AdminTicketController::class, 'create'])
+        ->name('tickets.create-with-user');
+
+    Route::put('/tickets/{ticket}/status', [AdminTicketController::class, 'updateStatus'])->name('tickets.update-status');
+    Route::post('/tickets/{ticket}/reply', [AdminTicketController::class, 'reply'])->name('tickets.reply');
+});
+
+// User Profile Routes
+Route::middleware(['auth'])->prefix('user')->name('user.')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+});
 
 // Include other route files
 require __DIR__.'/auth.php';

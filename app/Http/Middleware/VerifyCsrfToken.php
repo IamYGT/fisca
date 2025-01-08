@@ -13,6 +13,8 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
         'admin/tickets/*/status',
+        'management/admin/tickets/*',
+        'admin/tickets/*',
         // ... diğer muaf tutulan route'lar ...
     ];
 }

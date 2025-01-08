@@ -50,7 +50,7 @@ class AdminUserController extends Controller
 
         $user->assignRole('user');
 
-        return redirect()->route('admin.users.index')
+        return redirect()->route('management.admin.users.index')
             ->with('success', translate('users.createSuccess'));
     }
 
@@ -121,14 +121,14 @@ class AdminUserController extends Controller
 
         $user->roles()->sync([$validated['role']]);
 
-        return redirect()->route('admin.users.index')
+        return redirect()->route('management.admin.users.index')
             ->with('success', translate('users.updateSuccess'));
     }
 
     public function destroy(User $user)
     {
         $user->delete();
-        return redirect()->route('admin.users.index')
+        return redirect()->route('management.admin.users.index')
             ->with('success', translate('users.deleteSuccess'));
     }
 
@@ -181,7 +181,7 @@ class AdminUserController extends Controller
             ]);
         }
 
-        return redirect()->route('admin.users.index')
+        return redirect()->route('management.admin.users.index')
             ->with('success', translate('users.resetPasswordSuccess'));
     }
 

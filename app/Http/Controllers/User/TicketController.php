@@ -93,7 +93,7 @@ class TicketController extends Controller
             DB::commit();
 
             return redirect()
-                ->route('tickets.show', $ticket)
+                ->route('management.user.tickets.show', $ticket)
                 ->with('success', 'tickets.created');
 
         } catch (\Exception $e) {

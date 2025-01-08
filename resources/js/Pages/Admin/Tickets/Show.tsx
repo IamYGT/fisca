@@ -217,7 +217,7 @@ export default function Show({ auth, ticket, statuses }: Props) {
         setIsStatusUpdating(true);
 
         router.put(
-            route('admin.tickets.update-status', ticket.id),
+            route('management.admin.tickets.update-status', ticket.id),
             {
                 status: newStatus,
             },
@@ -255,15 +255,15 @@ export default function Show({ auth, ticket, statuses }: Props) {
         }
 
         // Dosyaları ekle
-        if (data.attachments.length > 0) {
-            data.attachments.forEach((file, index) => {
+        if (data.attachments && data.attachments.length > 0) {
+            Array.from(data.attachments).forEach((file, index) => {
                 formData.append(`attachments[${index}]`, file);
             });
         }
 
         try {
             await router.post(
-                route('admin.tickets.reply', ticket.id),
+                route('management.admin.tickets.reply', ticket.id),
                 formData,
                 {
                     forceFormData: true,
@@ -273,6 +273,9 @@ export default function Show({ auth, ticket, statuses }: Props) {
                         setData('message', '');
                         setData('quote', null);
                         setData('attachments', []);
+                        if (fileInputRef.current) {
+                            fileInputRef.current.value = '';
+                        }
                         setIsReplying(false);
                         toast.success(t('ticket.replyAdded'));
                     },

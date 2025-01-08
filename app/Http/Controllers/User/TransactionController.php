@@ -137,7 +137,7 @@ class TransactionController extends Controller
                     : 'transaction.created';
 
                 return redirect()
-                    ->route('transactions.history')
+                    ->route('management.user.transactions.history')
                     ->with('success', translate($successMessage));
             } catch (\Exception $e) {
                 \Log::error('Transaction creation failed:', [

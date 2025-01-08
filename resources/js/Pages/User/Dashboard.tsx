@@ -151,11 +151,11 @@ const ActivityItem = ({
     const getActivityRoute = (activity: DashboardStats['recentActivity'][0]) => {
         switch (activity.type) {
             case 'transaction':
-                return route('user.transactions.show', { transaction: activity.id });
+                return route('management.user.transactions.show', { transaction: activity.id });
             case 'withdrawal':
-                return route('user.withdrawals.create');
+                return route('management.user.withdrawals.create');
             case 'ticket':
-                return route('user.tickets.show', { ticket: activity.id });
+                return route('management.user.tickets.show', { ticket: activity.id });
             default:
                 return '#';
         }
@@ -305,11 +305,11 @@ const ActivityItem = ({
                             <span className="relative flex h-2 w-2">
                                 <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75
                                     ${activity.status === 'completed' ? 'bg-green-400' :
-                                    activity.status === 'pending' ? 'bg-amber-400' : 'bg-red-400'}`}
+                                        activity.status === 'pending' ? 'bg-amber-400' : 'bg-red-400'}`}
                                 />
                                 <span className={`relative inline-flex rounded-full h-2 w-2
                                     ${activity.status === 'completed' ? 'bg-green-500' :
-                                    activity.status === 'pending' ? 'bg-amber-500' : 'bg-red-500'}`}
+                                        activity.status === 'pending' ? 'bg-amber-500' : 'bg-red-500'}`}
                                 />
                             </span>
                             {t(`status.${activity.status}`)}
@@ -419,7 +419,7 @@ const IbanList = ({ ibans }: { ibans: DashboardStats['ibans'] }) => {
                     </p>
                 </div>
                 <Link
-                    href={route('user.profile.ibans.index')}
+                    href={route('management.user.profile.ibans.index')}
                     className="inline-flex items-center gap-1.5 rounded-lg bg-blue-50 px-3 py-2 text-sm font-medium text-blue-600 hover:bg-blue-100 dark:bg-blue-400/10 dark:text-blue-400 dark:hover:bg-blue-400/20 transition-colors duration-200"
                 >
                     <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -512,20 +512,20 @@ export default function Dashboard({ auth, stats }: PageProps) {
         {
             icon: FaExchangeAlt,
             label: t('dashboard.transactions'),
-            href: route('user.transactions.history'),
+            href: route('management.user.transactions.history'),
             color: 'from-blue-500 to-blue-600',
             hoverColor: 'hover:from-blue-600 hover:to-blue-700'
         },
         {
             label: t('dashboard.actions.withdraw'),
-            href: route('user.withdrawals.create'),
+            href: route('management.user.withdrawals.create'),
             icon: FaMoneyBillWave,
             color: 'from-green-600 to-green-700',
             hoverColor: 'hover:from-green-700 hover:to-green-800'
         },
         {
             label: t('dashboard.actions.tickets'),
-            href: route('user.tickets.index'),
+            href: route('management.user.tickets.index'),
             icon: ChatBubbleLeftIcon,
             color: 'from-purple-600 to-purple-700',
             hoverColor: 'hover:from-purple-700 hover:to-purple-800'
@@ -533,7 +533,7 @@ export default function Dashboard({ auth, stats }: PageProps) {
         {
             icon: BanknotesIcon,
             label: t('dashboard.ibanManagement'),
-            href: route('user.profile.ibans.index'),
+            href: route('management.user.profile.ibans.index'),
             color: 'from-purple-500 to-purple-600',
             hoverColor: 'hover:from-purple-600 hover:to-purple-700'
         }
@@ -592,7 +592,7 @@ export default function Dashboard({ auth, stats }: PageProps) {
                                 {t('dashboard.recentActivity')}
                             </h3>
                             <Link
-                                href={route('user.transactions.history')}
+                                href={route('management.user.transactions.history')}
                                 className="inline-flex items-center gap-1 text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
                             >
                                 {t('common.viewAll')}

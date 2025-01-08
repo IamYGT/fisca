@@ -42,7 +42,7 @@ export default function ResetPassword({
         // Önce şifreyi sakla
         if (data.password) {
             try {
-                const response = await fetch(route('admin.users.store-password'), {
+                const response = await fetch(route('management.admin.users.store-password'), {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

@@ -112,50 +112,15 @@ export default function ResetPassword({ auth, user }: ResetPasswordProps) {
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
-        if (passwordsMatch && passwordStrength >= 3) {
-            post(
-                route('admin.users.reset-password.update', { user: user.id }),
-                {
-                    preserveScroll: true,
-                    onSuccess: () => {
-                        router.post(
-                            route('admin.users.store-password'),
-                            {
-                                user_id: user.id,
-                                password: data.password,
-                                email: user.email,
-                            },
-                            {
-                                preserveState: true,
-                                preserveScroll: true,
-                                onSuccess: () => {
-                                    toast.success(
-                                        t('users.resetPasswordSuccess'),
-                                    );
-                                    router.visit(route('admin.users.index'), {
-                                        data: {
-                                            showUserDetails: user.id,
-                                            tempPassword: data.password,
-                                        },
-                                        preserveState: true,
-                                    });
-                                },
-                                onError: (errors) => {
-                                    console.error(
-                                        'Error storing password:',
-                                        errors,
-                                    );
-                                    toast.error(t('users.resetPasswordError'));
-                                },
-                            },
-                        );
-                    },
-                    onError: () => {
-                        toast.error(t('users.resetPasswordError'));
-                    },
-                },
-            );
-        }
+        post(route('management.admin.users.reset-password', user.id), {
+            onSuccess: () => {
+                toast.success(t('users.passwordResetSuccess'));
+                router.visit(route('management.admin.users.index'));
+            },
+            onError: () => {
+                toast.error(t('users.passwordResetError'));
+            },
+        });
     };
 
     const inputVariants = {
@@ -377,12 +342,8 @@ export default function ResetPassword({ auth, user }: ResetPasswordProps) {
                                         whileHover={{ scale: 1.02 }}
                                         whileTap={{ scale: 0.98 }}
                                         type="button"
-                                        onClick={() =>
-                                            router.visit(
-                                                route('admin.users.index'),
-                                            )
-                                        }
-                                        className="inline-flex items-center rounded-md border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-700"
+                                        onClick={() => router.visit(route('management.admin.users.index'))}
+                                        className="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                                     >
                                         {t('common.cancel')}
                                     </motion.button>

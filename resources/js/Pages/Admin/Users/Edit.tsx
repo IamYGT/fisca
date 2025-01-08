@@ -53,10 +53,10 @@ export default function EditUser({ auth, user, languages, secili_dil, availableR
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
         if (isValidEmail) {
-            put(route('admin.users.update', user.id), {
+            put(route('management.admin.users.update', user.id), {
                 onSuccess: () => {
                     toast.success(t('users.updateSuccess'));
-                    router.visit(route('admin.users.index'));
+                    router.visit(route('management.admin.users.index'));
                 },
                 onError: () => {
                     toast.error(t('users.updateError'));
@@ -260,7 +260,7 @@ export default function EditUser({ auth, user, languages, secili_dil, availableR
                                         whileHover={{ scale: 1.02 }}
                                         whileTap={{ scale: 0.98 }}
                                         type="button"
-                                        onClick={() => router.visit(route('admin.users.index'))}
+                                        onClick={() => router.visit(route('management.admin.users.index'))}
                                         className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md font-semibold text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
                                     >
                                         {t('common.cancel')}
