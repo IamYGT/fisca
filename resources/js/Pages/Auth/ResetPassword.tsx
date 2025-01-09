@@ -39,32 +39,17 @@ export default function ResetPassword({
     const submit: FormEventHandler = async (e) => {
         e.preventDefault();
 
-        // Önce şifreyi sakla
-        if (data.password) {
-            try {
-                const response = await fetch(route('management.admin.users.store-password'), {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
-                    },
-                    body: JSON.stringify({
-                        password: data.password,
-                        email: data.email,
-                    }),
-                });
-
-                if (!response.ok) {
-                    throw new Error('Password storage failed');
-                }
-            } catch (error) {
-                console.error('Password storage error:', error);
-            }
-        }
-
         // Şifre sıfırlama işlemi
         post(route('password.store'), {
             preserveState: true,
+            onSuccess: () => {
+                // Başarılı olduğunda yapılacak işlemler
+                reset();
+            },
+            onError: (errors) => {
+                // Hata durumunda yapılacak işlemler
+                console.error('Password reset error:', errors);
+            },
         });
     };
 

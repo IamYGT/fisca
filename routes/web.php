@@ -15,6 +15,7 @@ use App\Http\Controllers\Auth\{
     GitHubController
 };
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 
 /*
@@ -32,7 +33,22 @@ Route::get('/language/{lang}', [LanguageController::class, 'switchLanguage'])
 */
 Route::middleware('guest')->group(function () {
     Route::get('/', function () {
-        return redirect()->route('login');
+        return inertia('Front-site/Home');
+    })->name('home');
+
+    // Diğer front-site sayfaları için rotalar
+    Route::prefix('front')->name('front.')->group(function () {
+        Route::get('/features', function () {
+            return inertia('Front-site/Features');
+        })->name('features');
+
+        Route::get('/news', function () {
+            return inertia('Front-site/News');
+        })->name('news');
+
+        Route::get('/stats', function () {
+            return inertia('Front-site/Stats');
+        })->name('stats');
     });
 });
 
@@ -136,8 +152,12 @@ Route::get('storage/ticket-attachments/{path}', function (string $path) {
 Route::middleware(['auth'])->prefix('user')->name('user.')->group(function () {
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
 });
-
 // Include other route files
 require __DIR__.'/auth.php';
 require __DIR__.'/admin.php';
 require __DIR__.'/user.php';
+
+Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
+    ->name('logout')
+    ->middleware('auth');
+

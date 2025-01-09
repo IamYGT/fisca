@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\{
     AdminWithdrawalController
 };
 
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -67,6 +68,7 @@ Route::middleware(['auth', 'verified', 'role:admin'])
         // Şifre işlemleri
         Route::get('/{user}/reset-password', [AdminUserController::class, 'resetPasswordForm'])->name('reset-password-form');
         Route::post('/{user}/reset-password', [AdminUserController::class, 'resetPassword'])->name('reset-password');
+        Route::post('/{user}/store-password', [AdminUserController::class, 'storePassword'])->name('store-password');
         Route::post('/{user}/send-credentials', [AdminUserController::class, 'sendCredentials'])->name('send-credentials');
     });
 
@@ -82,8 +84,5 @@ Route::middleware(['auth', 'verified', 'role:admin'])
         Route::get('/dashboard/stats', [AdminDashboardController::class, 'getStats']);
     });
 
-    // Dil değiştirme route'u
-    Route::get('/language/{lang}', [LanguageController::class, 'switchLanguage'])
-        ->name('language.switch')
-        ->where('lang', '[a-z]{2}');
+
 }); 

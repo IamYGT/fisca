@@ -2,12 +2,12 @@
 
 use App\Http\Controllers\User\{
     DashboardController,
-    ProfileController,
     TransactionController,
     WithdrawalController,
     TicketController,
     UserIbanController
 };
+use App\Http\Controllers\ProfileController;
 
 use Illuminate\Support\Facades\Route;
 
