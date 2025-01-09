@@ -113,22 +113,24 @@ Route::controller(GitHubController::class)->group(function () {
 | File Access Routes
 |--------------------------------------------------------------------------
 */
-Route::get('storage/ticket-attachments/{year}/{month}/{day}/{filename}', function ($year, $month, $day, $filename) {
-    $path = "ticket-attachments/{$year}/{$month}/{$day}/{$filename}";
+Route::get('storage/ticket-attachments/{path}', function (string $path) {
+    // Yetkilendirme kontrolü
+    if (!auth()->check()) {
+        abort(403);
+    }
 
-    if (!Storage::disk('public')->exists($path)) {
+    $fullPath = "ticket-attachments/{$path}";
+
+    if (!Storage::disk('public')->exists($fullPath)) {
         abort(404);
     }
 
-    return response()->file(Storage::disk('public')->path($path), [
+    return response()->file(Storage::disk('public')->path($fullPath), [
         'Cache-Control' => 'public, max-age=86400',
     ]);
-})->where([
-    'year' => '[0-9]{4}',
-    'month' => '[0-9]{2}',
-    'day' => '[0-9]{2}',
-    'filename' => '[a-zA-Z0-9_\-\.]+',
-])->middleware(['auth', 'verified']);
+})->where('path', '.*')
+  ->middleware(['auth', 'verified'])
+  ->name('ticket.attachment');
 
 // User Profile Routes
 Route::middleware(['auth'])->prefix('user')->name('user.')->group(function () {

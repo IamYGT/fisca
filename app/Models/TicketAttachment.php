@@ -28,7 +28,7 @@ class TicketAttachment extends Model
         }
 
         try {
-            return Storage::disk('ticket-attachments')->url($this->path);
+            return Storage::url($this->path);
         } catch (\Exception $e) {
             Log::error('Dosya URL oluşturma hatası:', [
                 'attachment_id' => $this->id,
@@ -51,7 +51,7 @@ class TicketAttachment extends Model
         static::deleting(function ($attachment) {
             if ($attachment->path) {
                 try {
-                    Storage::disk('ticket-attachments')->delete($attachment->path);
+                    Storage::disk('public')->delete($attachment->path);
                 } catch (\Exception $e) {
                     Log::error('Dosya silme hatası:', [
                         'path' => $attachment->path,

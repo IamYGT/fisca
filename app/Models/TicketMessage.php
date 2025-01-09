@@ -16,8 +16,9 @@ class TicketMessage extends Model
         'ticket_id',
         'user_id',
         'message',
+        'quote',
         'is_admin',
-        'quote'
+        'to_user_id'
     ];
 
     protected $casts = [
@@ -27,6 +28,15 @@ class TicketMessage extends Model
     ];
 
     protected $appends = ['formatted_attachments'];
+
+    protected static function booted()
+    {
+        static::created(function ($message) {
+            $message->ticket->update([
+                'last_reply_at' => $message->created_at
+            ]);
+        });
+    }
 
     public function attachments(): HasMany
     {

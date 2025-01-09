@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Ticket extends Model
 {
@@ -17,7 +18,8 @@ class Ticket extends Model
         'category',
         'last_reply_at',
         'closed_at',
-        'history'
+        'history',
+        'to_user_id'
     ];
 
     protected $casts = [
@@ -35,9 +37,21 @@ class Ticket extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function toUser(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'to_user_id');
+    }
+
     public function replies(): HasMany
     {
         return $this->hasMany(TicketMessage::class);
+    }
+
+    public function lastReply(): HasOne
+    {
+        return $this->hasOne(TicketMessage::class)
+            ->latest('created_at')
+            ->orderBy('id', 'desc');
     }
 
     public function histories(): HasMany

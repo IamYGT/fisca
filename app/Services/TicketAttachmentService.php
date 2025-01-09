@@ -33,11 +33,11 @@ class TicketAttachmentService
         $month = date('m');
         $day = date('d');
         
-        $path = "ticket-attachments/{$year}/{$month}/{$day}";
+        $path = "public/ticket-attachments/{$year}/{$month}/{$day}";
         
-        $this->ensureDirectoryExists('ticket-attachments');
-        $this->ensureDirectoryExists("ticket-attachments/{$year}");
-        $this->ensureDirectoryExists("ticket-attachments/{$year}/{$month}");
+        $this->ensureDirectoryExists('public/ticket-attachments');
+        $this->ensureDirectoryExists("public/ticket-attachments/{$year}");
+        $this->ensureDirectoryExists("public/ticket-attachments/{$year}/{$month}");
         $this->ensureDirectoryExists($path);
         
         return $path;
@@ -45,8 +45,8 @@ class TicketAttachmentService
 
     private function ensureDirectoryExists(string $path): void
     {
-        if (!Storage::disk('ticket-attachments')->exists($path)) {
-            Storage::disk('ticket-attachments')->makeDirectory($path, 0775, true);
+        if (!Storage::disk('public')->exists($path)) {
+            Storage::disk('public')->makeDirectory($path, 0775, true);
         }
     }
 
@@ -56,7 +56,7 @@ class TicketAttachmentService
         $relativePath = $uploadPath . '/' . $fileName;
         
         try {
-            $uploaded = Storage::disk('ticket-attachments')->putFileAs(
+            $uploaded = Storage::disk('public')->putFileAs(
                 $uploadPath,
                 $file,
                 $fileName,
@@ -74,7 +74,7 @@ class TicketAttachmentService
                 'size' => $file->getSize(),
             ]);
 
-            if (!Storage::disk('ticket-attachments')->exists($relativePath)) {
+            if (!Storage::disk('public')->exists($relativePath)) {
                 throw new \Exception('Dosya kaydedildi fakat erişilemiyor');
             }
         } catch (\Exception $e) {

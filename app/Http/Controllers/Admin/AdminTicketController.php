@@ -16,37 +16,35 @@ class AdminTicketController extends Controller
     public function index(Request $request)
     {
         try {
-            $query = Ticket::with(['user', 'lastReply'])
-                ->when($request->search, function ($q, $search) {
-                    $q->where('subject', 'like', "%{$search}%")
-                      ->orWhere('message', 'like', "%{$search}%");
+            $query = Ticket::with(['user', 'lastReply.user'])
+                ->when($request->search, function ($query, $search) {
+                    $query->where('subject', 'like', "%{$search}%")
+                        ->orWhere('message', 'like', "%{$search}%");
                 })
-                ->when($request->status, function ($q, $status) {
-                    $q->where('status', $status);
+                ->when($request->status, function ($query, $status) {
+                    $query->where('status', $status);
                 })
-                ->when($request->priority, function ($q, $priority) {
-                    $q->where('priority', $priority);
+                ->when($request->priority, function ($query, $priority) {
+                    $query->where('priority', $priority);
                 })
-                ->when($request->category, function ($q, $category) {
-                    $q->where('category', $category);
+                ->when($request->category, function ($query, $category) {
+                    $query->where('category', $category);
                 });
 
             // Sıralama
-            if ($request->sort) {
-                $direction = $request->direction === 'desc' ? 'desc' : 'asc';
-                $query->orderBy($request->sort, $direction);
-            } else {
-                $query->latest();
-            }
+            $direction = $request->direction === 'desc' ? 'desc' : 'asc';
+            $sortField = in_array($request->sort, ['created_at', 'last_reply_at', 'status', 'priority']) 
+                ? $request->sort 
+                : 'last_reply_at'; // Varsayılan sıralama son yanıta göre
 
-            $tickets = $query->paginate(10)->withQueryString();
+            $tickets = $query->orderBy($sortField, $direction)->paginate(10);
 
-            // İstatistikleri hesapla
+            // İstatistikler
             $stats = [
                 'total' => Ticket::count(),
                 'open' => Ticket::where('status', 'open')->count(),
+                'closed' => Ticket::where('status', 'closed')->count(),
                 'answered' => Ticket::where('status', 'answered')->count(),
-                'high_priority' => Ticket::where('priority', 'high')->count(),
             ];
 
             return Inertia::render('Admin/Tickets/Index', [
@@ -57,6 +55,7 @@ class AdminTicketController extends Controller
                 'categories' => Ticket::CATEGORIES,
                 'stats' => $stats,
             ]);
+
         } catch (\Exception $e) {
             Log::error('Admin ticket listesi hatası:', [
                 'error' => $e->getMessage(),
@@ -111,15 +110,14 @@ class AdminTicketController extends Controller
 
             if ($request->hasFile('attachments')) {
                 foreach ($request->file('attachments') as $file) {
-                    $path = $file->store('public/ticket-attachments');
-                    $storagePath = str_replace('public/', '', $path);
+                    $fileName = $file->hashName();
+                    $path = $file->storeAs('public/ticket-attachments', $fileName, 'public');
                     
                     $reply->attachments()->create([
-                        'path' => $storagePath,
+                        'path' => $path,
                         'name' => $file->getClientOriginalName(),
                         'type' => $file->getMimeType(),
                         'size' => $file->getSize(),
-                        'url' => Storage::url($path)
                     ]);
                 }
             }
@@ -213,6 +211,28 @@ class AdminTicketController extends Controller
             return back()
                 ->withInput()
                 ->with('error', 'Ticket oluşturulurken bir hata oluştu.');
+        }
+    }
+
+    protected function handleAttachments($message, $attachments)
+    {
+        foreach ($attachments as $file) {
+            try {
+                $fileName = $file->hashName();
+                $path = $file->storeAs('public/ticket-attachments', $fileName, 'public');
+                
+                $message->attachments()->create([
+                    'name' => $file->getClientOriginalName(),
+                    'path' => $path,
+                    'type' => $file->getMimeType(),
+                    'size' => $file->getSize()
+                ]);
+            } catch (\Exception $e) {
+                Log::error('Dosya yükleme hatası:', [
+                    'error' => $e->getMessage(),
+                    'file' => $file->getClientOriginalName()
+                ]);
+            }
         }
     }
 
