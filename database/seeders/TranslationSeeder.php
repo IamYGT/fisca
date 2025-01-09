@@ -214,6 +214,58 @@ class TranslationSeeder extends Seeder
                 'en' => 'Transaction Fee',
                 'key' => 'transaction.cryptoFee'
             ],
+
+            // Kullanıcı Giriş Bilgileri için çeviriler
+            [
+                'tr' => 'Giriş Bilgileri',
+                'en' => 'Login Credentials',
+                'key' => 'users.loginCredentials'
+            ],
+            [
+                'tr' => 'Geçici Şifre',
+                'en' => 'Temporary Password',
+                'key' => 'users.temporaryPassword'
+            ],
+            [
+                'tr' => 'Giriş Talimatları',
+                'en' => 'Login Instructions',
+                'key' => 'users.loginInstructions'
+            ],
+            [
+                'tr' => 'Yukarıdaki e-posta ve geçici şifre ile giriş yapın',
+                'en' => 'Log in with the email and temporary password above',
+                'key' => 'users.loginStep1'
+            ],
+            [
+                'tr' => 'İlk girişte yeni bir şifre belirlemeniz istenecektir',
+                'en' => 'You will be asked to set a new password on your first login',
+                'key' => 'users.loginStep2'
+            ],
+            [
+                'tr' => 'Yeni şifrenizi belirledikten sonra sistemi kullanmaya başlayabilirsiniz',
+                'en' => 'After setting your new password, you can start using the system',
+                'key' => 'users.loginStep3'
+            ],
+            [
+                'tr' => 'Not: Güvenliğiniz için bu bilgileri güvenli bir şekilde saklayın ve başkalarıyla paylaşmayın.',
+                'en' => 'Note: For your security, please keep this information safe and do not share it with others.',
+                'key' => 'users.securityNote'
+            ],
+            [
+                'tr' => 'Kullanıcı Bilgileri',
+                'en' => 'User Information',
+                'key' => 'users.userInfo'
+            ],
+            [
+                'tr' => 'Bu kullanıcı için geçici şifre henüz oluşturulmamış.',
+                'en' => 'No temporary password has been generated for this user yet.',
+                'key' => 'users.noTemporaryPassword'
+            ],
+            [
+                'tr' => ':name - Giriş Bilgileri',
+                'en' => ':name - Login Credentials',
+                'key' => 'users.loginCredentialsTicketSubject'
+            ],
         ];
 
         foreach ($translations as $translation) {

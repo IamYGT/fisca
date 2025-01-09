@@ -117,11 +117,14 @@
   "resources/js/Pages/Admin/Tickets/Components/UserInfoPanel.tsx": [
     "https://fisca.org.uk/build/assets/UserInfoPanel-a3qwK-wb.js"
   ],
+  "resources/js/Pages/Admin/Tickets/Create.tsx": [
+    "https://fisca.org.uk/build/assets/Create-b4IsAZEe.js"
+  ],
   "resources/js/Pages/Admin/Tickets/Index.tsx": [
     "https://fisca.org.uk/build/assets/Index-roU9iKRm.js"
   ],
   "resources/js/Pages/Admin/Tickets/Show.tsx": [
-    "https://fisca.org.uk/build/assets/Show-B3G0mPop.js"
+    "https://fisca.org.uk/build/assets/Show-CDCAqtwK.js"
   ],
   "resources/js/Pages/Admin/Tickets/utils.ts": [
     "https://fisca.org.uk/build/assets/MessageBubble-C8JrjYwr.js"

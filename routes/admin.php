@@ -32,14 +32,21 @@ Route::middleware(['auth', 'verified', 'role:admin'])
     });
 
     // Tickets
-    Route::prefix('tickets')->name('tickets.')->group(function () {
-        Route::get('/', [AdminTicketController::class, 'index'])->name('index');
-        Route::get('/create/{user?}', [AdminTicketController::class, 'create'])->name('create');
-        Route::post('/', [AdminTicketController::class, 'store'])->name('store');
-        Route::get('/{ticket}', [AdminTicketController::class, 'show'])->name('show');
-        Route::post('/{ticket}/reply', [AdminTicketController::class, 'reply'])->name('reply');
-        Route::put('/{ticket}/status', [AdminTicketController::class, 'updateStatus'])->name('update-status');
-    });
+    Route::resource('tickets', AdminTicketController::class)->names([
+        'index' => 'tickets.index',
+        'create' => 'tickets.create',
+        'store' => 'tickets.store',
+        'show' => 'tickets.show',
+    ])->except(['create']);
+
+    // Create with user route'unu resource içine taşıyalım
+    Route::get('tickets/create/{user?}', [AdminTicketController::class, 'create'])
+        ->name('tickets.create-with-user');
+
+    Route::put('/tickets/{ticket}/status', [AdminTicketController::class, 'updateStatus'])
+        ->name('tickets.update-status');
+    Route::post('/tickets/{ticket}/reply', [AdminTicketController::class, 'reply'])
+        ->name('tickets.reply');
 
     // Users
     Route::prefix('users')->name('users.')->group(function () {

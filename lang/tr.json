@@ -1,0 +1,15 @@
+{
+    "users": {
+        "loginCredentials": "Giriş Bilgileri",
+        "email": "E-posta",
+        "temporaryPassword": "Geçici Şifre",
+        "loginInstructions": "Giriş Talimatları",
+        "loginStep1": "Yukarıdaki e-posta ve geçici şifre ile giriş yapın",
+        "loginStep2": "İlk girişte yeni bir şifre belirlemeniz istenecektir",
+        "loginStep3": "Yeni şifrenizi belirledikten sonra sistemi kullanmaya başlayabilirsiniz",
+        "securityNote": "Not: Güvenliğiniz için bu bilgileri güvenli bir şekilde saklayın ve başkalarıyla paylaşmayın.",
+        "userInfo": "Kullanıcı Bilgileri",
+        "noTemporaryPassword": "Bu kullanıcı için geçici şifre henüz oluşturulmamış.",
+        "loginCredentialsTicketSubject": "{{name}} - Giriş Bilgileri"
+    }
+} 

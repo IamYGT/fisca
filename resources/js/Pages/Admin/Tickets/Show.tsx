@@ -21,6 +21,7 @@ import { PriorityBadge } from './Components/Badges';
 import PreviewModal from './Components/PreviewModal';
 import StatusSelect from './Components/StatusSelect';
 import TicketHistoryPanel from './Components/TicketHistoryPanel';
+import { PageProps } from '@/types';
 
 interface Message {
     id: number;
@@ -74,17 +75,10 @@ interface Ticket {
     attachments: Attachment[];
 }
 
-interface Props {
-    auth: {
-        user: {
-            roles: { name: string; }[];
-            email: string;
-            id: number;
-            name: string;
-        };
-    };
+interface Props extends PageProps {
     ticket: Ticket;
     statuses: string[];
+    locale?: string;
 }
 
 interface MessageBubbleProps {
@@ -197,12 +191,19 @@ const MessageBubble = ({
     );
 };
 
-export default function Show({ auth, ticket, statuses }: Props) {
-    const { t, locale } = useTranslation();
+interface Props {
+    auth: any;
+    ticket: Ticket;
+    statuses: string[];
+    locale?: string;
+}
+
+export default function Show({ auth, ticket, statuses, locale = 'tr' }: Props) {
+    const { t } = useTranslation();
     const [isReplying, setIsReplying] = useState(false);
     const [previewImage, setPreviewImage] = useState<string | null>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
-    const [, setCurrentStatus] = useState(ticket.status);
+    const [currentStatus, setCurrentStatus] = useState(ticket.status);
     const [isStatusUpdating, setIsStatusUpdating] = useState(false);
 
     const { data, setData, processing, reset } = useForm({
@@ -326,7 +327,7 @@ export default function Show({ auth, ticket, statuses }: Props) {
         setData('attachments', newAttachments);
     };
 
-    // formatDate fonksiyonunu tanımla
+    // formatDate fonksiyonunu güncelle
     const formatDate = useCallback((date: string) => {
         const options: Intl.DateTimeFormatOptions = {
             year: 'numeric',
@@ -349,9 +350,9 @@ export default function Show({ auth, ticket, statuses }: Props) {
         };
 
         try {
-            return new Date(date).toLocaleDateString(
+            return new Date(date).toLocaleString(
                 locale === 'tr' ? 'tr-TR' : 'en-US',
-                dateFormats[locale as keyof typeof dateFormats]
+                dateFormats[locale === 'tr' ? 'tr' : 'en']
             );
         } catch (error) {
             console.error('Date formatting error:', error);
@@ -361,14 +362,7 @@ export default function Show({ auth, ticket, statuses }: Props) {
 
     return (
         <AuthenticatedLayout
-            auth={{
-                user: {
-                    id: auth.user.id,
-                    name: auth.user.name,
-                    email: auth.user.email,
-                    roles: auth.user.roles
-                }
-            }}
+            auth={auth}
             header={
                 <div className="flex items-center justify-between">
                     <h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
