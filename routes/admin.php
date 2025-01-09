@@ -32,21 +32,27 @@ Route::middleware(['auth', 'verified', 'role:admin'])
     });
 
     // Tickets
-    Route::resource('tickets', AdminTicketController::class)->names([
-        'index' => 'tickets.index',
-        'create' => 'tickets.create',
-        'store' => 'tickets.store',
-        'show' => 'tickets.show',
-    ])->except(['create']);
+    Route::prefix('tickets')->name('tickets.')->group(function () {
+        // Ana resource route'ları
+        Route::get('/', [AdminTicketController::class, 'index'])->name('index');
+        Route::post('/', [AdminTicketController::class, 'store'])->name('store');
+        Route::get('/{ticket}', [AdminTicketController::class, 'show'])->name('show');
+        Route::put('/{ticket}', [AdminTicketController::class, 'update'])->name('update');
+        Route::delete('/{ticket}', [AdminTicketController::class, 'destroy'])->name('destroy');
 
-    // Create with user route'unu resource içine taşıyalım
-    Route::get('tickets/create/{user?}', [AdminTicketController::class, 'create'])
-        ->name('tickets.create-with-user');
+        // Özel route'lar
+        Route::get('/create/{user?}', [AdminTicketController::class, 'create'])
+            ->name('create-with-user');
 
-    Route::put('/tickets/{ticket}/status', [AdminTicketController::class, 'updateStatus'])
-        ->name('tickets.update-status');
-    Route::post('/tickets/{ticket}/reply', [AdminTicketController::class, 'reply'])
-        ->name('tickets.reply');
+        Route::put('/{ticket}/status', [AdminTicketController::class, 'updateStatus'])
+            ->name('update-status');
+
+        Route::post('/{ticket}/reply', [AdminTicketController::class, 'reply'])
+            ->name('reply');
+        
+        Route::post('/create-for-user/{user}', [AdminTicketController::class, 'createForUser'])
+            ->name('create-for-user');
+    });
 
     // Users
     Route::prefix('users')->name('users.')->group(function () {
@@ -75,4 +81,9 @@ Route::middleware(['auth', 'verified', 'role:admin'])
     Route::prefix('api')->group(function () {
         Route::get('/dashboard/stats', [AdminDashboardController::class, 'getStats']);
     });
+
+    // Dil değiştirme route'u
+    Route::get('/language/{lang}', [LanguageController::class, 'switchLanguage'])
+        ->name('language.switch')
+        ->where('lang', '[a-z]{2}');
 }); 

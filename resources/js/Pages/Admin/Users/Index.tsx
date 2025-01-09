@@ -16,7 +16,6 @@ import {
     FaUserPlus,
 } from 'react-icons/fa';
 import { toast } from 'react-toastify';
-import axios from 'axios';
 
 interface User {
     id: number;
@@ -73,7 +72,7 @@ export default function Index({ auth, users }: Props) {
     }, [users]);
 
     const handleDelete = (userId: number) => {
-        if (confirm(t('common.confirmDelete'))) {
+        if (confirm(t('users.confirmDelete'))) {
             router.delete(route('management.admin.users.destroy', userId), {
                 onSuccess: () => {
                     toast.success(t('users.deleteSuccess'));
@@ -87,20 +86,37 @@ export default function Index({ auth, users }: Props) {
         toast.success(t('common.copied'));
     };
 
-    const sendEmail = async (userId: number) => {
-        try {
-            const response = await axios.post(
-                route('management.admin.users.send-credentials', userId),
-                { user_id: userId }
-            );
-            toast.success(t('users.emailSent'));
-        } catch (error) {
-            toast.error(t('users.emailError'));
-        }
+    const sendEmail = (userId: number) => {
+        router.post(
+            route('management.admin.users.send-credentials', userId),
+            {},
+            {
+                onSuccess: () => toast.success(t('users.emailSent')),
+                onError: () => toast.error(t('users.emailError')),
+            },
+        );
     };
 
     const createSupportTicket = (userId: number) => {
-        router.visit(route('management.admin.tickets.create-with-user', { user: userId }));
+        router.post(
+            route('management.admin.tickets.create-for-user', userId),
+            {
+                subject: 'Kullanıcı Bilgileri',
+                message: `Kullanıcı Detayları:
+- İsim: ${selectedUser?.name}
+- E-posta: ${selectedUser?.email}
+- Rol: ${selectedUser?.roles[0]?.name || 'Rol atanmamış'}
+- Kayıt Tarihi: ${new Date(selectedUser?.created_at || '').toLocaleDateString()}
+- Şifre Durumu: ${selectedUser?.has_encrypted_password ? 'Şifreli' : 'Şifresiz'}
+${selectedUser?.password_updated_at ? `- Son Şifre Güncelleme: ${new Date(selectedUser.password_updated_at).toLocaleDateString()}` : ''}`,
+                priority: 'medium',
+                category: 'technical',
+            },
+            {
+                onSuccess: () => toast.success(t('tickets.created')),
+                onError: () => toast.error(t('tickets.error')),
+            },
+        );
     };
 
     const sendCredentials = (userId: number) => {
@@ -114,14 +130,6 @@ export default function Index({ auth, users }: Props) {
                 toast.error(t('users.credentialsError'));
             },
         });
-    };
-
-    const handleEdit = (userId: number) => {
-        router.get(route('management.admin.users.edit', userId));
-    };
-
-    const handleResetPassword = (userId: number) => {
-        router.get(route('management.admin.users.reset-password-form', userId));
     };
 
     return (
@@ -149,10 +157,10 @@ export default function Index({ auth, users }: Props) {
                             <div className="mb-6 flex justify-end">
                                 <Link
                                     href={route('management.admin.users.create')}
-                                    className="inline-flex items-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+                                    className="inline-flex items-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out hover:bg-blue-700 focus:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:bg-blue-900"
                                 >
                                     <FaUserPlus className="mr-2" />
-                                    {t('users.create')}
+                                    {t('users.addNew')}
                                 </Link>
                             </div>
 

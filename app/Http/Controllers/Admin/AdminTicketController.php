@@ -161,5 +161,60 @@ class AdminTicketController extends Controller
         return back()->with('success', 'tickets.statusUpdated');
     }
 
+    public function createForUser(Request $request, User $user)
+    {
+        try {
+            $request->validate([
+                'subject' => 'required|string|max:255',
+                'message' => 'required|string',
+                'priority' => 'required|string|in:' . implode(',', Ticket::PRIORITIES),
+                'category' => 'required|string|in:' . implode(',', Ticket::CATEGORIES),
+            ]);
+
+            DB::beginTransaction();
+
+            // Ticket oluştur
+            $ticket = Ticket::create([
+                'user_id' => $user->id,
+                'subject' => $request->subject,
+                'message' => $request->message,
+                'status' => 'open',
+                'priority' => $request->priority,
+                'category' => $request->category
+            ]);
+
+            // İlk mesajı ekle
+            $ticket->replies()->create([
+                'user_id' => auth()->id(),
+                'message' => $request->message,
+                'is_admin' => true
+            ]);
+
+            // Ticket geçmişine ekle
+            $ticket->histories()->create([
+                'user_id' => auth()->id(),
+                'action' => 'created_by_admin',
+                'details' => 'Ticket yönetici tarafından oluşturuldu'
+            ]);
+
+            DB::commit();
+
+            return redirect()
+                ->route('management.admin.tickets.show', $ticket->id)
+                ->with('success', 'Ticket başarıyla oluşturuldu');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Admin ticket oluşturma hatası:', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            
+            return back()
+                ->withInput()
+                ->with('error', 'Ticket oluşturulurken bir hata oluştu.');
+        }
+    }
+
     // Diğer metodlar...
 }

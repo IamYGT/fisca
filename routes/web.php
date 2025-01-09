@@ -15,7 +15,6 @@ use App\Http\Controllers\Auth\{
     GitHubController
 };
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\Admin\AdminTicketController;
 
 
 /*
@@ -43,6 +42,10 @@ Route::middleware('guest')->group(function () {
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth', 'verified'])->group(function () {
+    // Dil değiştirme route'u
+    Route::get('/language/{lang}', [LanguageController::class, 'switchLanguage'])
+        ->name('language.switch');
+
     // Ana dashboard route'u - role göre yönlendirme yapar
     Route::get('/dashboard', function () {
         $user = Auth::user();
@@ -126,26 +129,6 @@ Route::get('storage/ticket-attachments/{year}/{month}/{day}/{filename}', functio
     'day' => '[0-9]{2}',
     'filename' => '[a-zA-Z0-9_\-\.]+',
 ])->middleware(['auth', 'verified']);
-
-/*
-|--------------------------------------------------------------------------
-| Admin Ticket Routes
-|--------------------------------------------------------------------------
-*/
-Route::middleware(['auth', 'role:admin'])->prefix('management/admin')->name('management.admin.')->group(function () {
-    Route::resource('tickets', AdminTicketController::class)->names([
-        'index' => 'tickets.index',
-        'create' => 'tickets.create',
-        'store' => 'tickets.store',
-        'show' => 'tickets.show',
-    ])->except(['create']);
-
-    Route::get('tickets/create/{user?}', [AdminTicketController::class, 'create'])
-        ->name('tickets.create-with-user');
-
-    Route::put('/tickets/{ticket}/status', [AdminTicketController::class, 'updateStatus'])->name('tickets.update-status');
-    Route::post('/tickets/{ticket}/reply', [AdminTicketController::class, 'reply'])->name('tickets.reply');
-});
 
 // User Profile Routes
 Route::middleware(['auth'])->prefix('user')->name('user.')->group(function () {
